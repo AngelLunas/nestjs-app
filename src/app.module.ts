@@ -5,10 +5,8 @@ import { AppService } from './app.service';
 import { CodaModule } from './coda/coda.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    isGlobal: true
-  }), CodaModule],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [ConfigModule.forRoot({ isGlobal: true }), CodaModule],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

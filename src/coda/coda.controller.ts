@@ -1,6 +1,11 @@
-import { Controller, Get, Param, HttpException, HttpStatus } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    HttpException,
+    HttpStatus,
+} from '@nestjs/common';
 import { CodaService } from './coda.service';
-
 @Controller('coda')
 export class CodaController {
     constructor(private readonly codaService: CodaService) {}
@@ -13,7 +18,10 @@ export class CodaController {
             if (error instanceof HttpException) {
                 throw error;
             } else {
-                throw new HttpException('Error al obtener los ids de la página', HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new HttpException(
+                    'Error al obtener los ids de la página',
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                );
             }
         }
     }
