@@ -5,4 +5,5 @@ export const viewsId: { [key: string]: string } = {
     mensajeria: 'table-nVgkGMib2a',
     seleccionarlasreservas: 'table-aqigJZRUVH',
     interesenreservar: 'table-WtLQtJlwyt',
+    central: 'grid-54ktLB_93G'
 };

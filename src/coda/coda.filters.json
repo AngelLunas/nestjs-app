@@ -1,0 +1,42 @@
+{
+    "c-P1PHzAXpXt": {
+        "name": "price",
+        "type": "max",
+        "value": 2072
+    },
+    "c-PtyocPAfFl": {
+        "name": "problems",
+        "type": "max",
+        "value": 3 
+    },
+    "c-0gSbe_0lu3" : {
+        "name": "interest",
+        "type": "max",
+        "value": 4
+    },
+    "c-hP51wTK-HT": {
+        "name": "location",
+        "type": "list",
+        "value": ["Miami", "Tampa"]
+    }, 
+    "c-bNiWedw6Z4": {
+        "name": "status de mensajes",
+        "type": "min",
+        "value": 1
+    },
+    "c-peQmQoS0Ew": {
+        "name": "Extend + Slow Book Score",
+        "type": "min",
+        "value": 1200
+    },
+    "c-mgBiBZ2Aio": {
+        "name": "Score",
+        "type": "min",
+        "value": 4.5
+    },
+    "c-irL9ThK6Aa": {
+        "name": "Available for Entire Lease",
+        "type": "list",
+        "value": ["Si", ""]
+    }
+}
