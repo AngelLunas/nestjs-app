@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MonthData } from '../../common/common';
-
+import { MonthData } from '@mtronic-llc/common';
 @Injectable()
 export class AppService {
     getHello(): MonthData {

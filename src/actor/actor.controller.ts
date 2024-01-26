@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
 import { ActorService } from "./actor.service";
 import { CodaService } from "../coda/coda.service";
-import { BackendActorPlacesQuery, ActorQuery } from "../../../common/common";
+import { BackendActorPlacesQuery, ActorQuery } from '@mtronic-llc/common';
 
 @Controller("actor")
 export class ActorController {

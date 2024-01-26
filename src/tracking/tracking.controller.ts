@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { AvailabilityData } from '../../../common/common';
+import { AvailabilityData } from '@mtronic-llc/common';
 import { TrackingService } from './tracking.service';
 
 @Controller('tracking')

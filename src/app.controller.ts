@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MonthData } from '../../common/common';
+import { MonthData } from '@mtronic-llc/common';
 
 @Controller()
 export class AppController {

@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { PlaceService } from "./place.service";
-import { MongoPlaceSchema } from "../../../common/common";
+import { MongoPlaceSchema } from '@mtronic-llc/common';
 
 @Controller("place")
 export class PlaceController {

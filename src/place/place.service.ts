@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { MongoPlaceSchema } from '../../../common/common';
+import { MongoPlaceSchema } from '@mtronic-llc/common'
 
 @Injectable()
 export class PlaceService {

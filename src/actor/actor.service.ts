@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { ApifyClient } from "apify-client";
-import { ApifyActorInput, BackendActorPlacesQuery, BackendActorAvailabilityQuery, ActorQuery } from "../../../common/common";
+import { ApifyActorInput, BackendActorPlacesQuery, BackendActorAvailabilityQuery, ActorQuery } from '@mtronic-llc/common';
 
 @Injectable()
 export class ActorService {

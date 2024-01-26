@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AvailabilityData } from '../../../common/common';
+import { AvailabilityData } from '@mtronic-llc/common';
 
 @Injectable()
 export class TrackingService {
