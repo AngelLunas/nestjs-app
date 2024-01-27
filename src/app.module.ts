@@ -6,6 +6,7 @@ import { CodaModule } from './coda/coda.module';
 import { TrackingModule } from './tracking/tracking.module';
 import { ActorModule } from './actor/actor.module';
 import { PlaceModule } from './place/place.module';
+import { FahsModule } from './fahs/fahs.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -14,6 +15,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         MongooseModule.forRoot(process.env.MONGO_URI),
         CodaModule,
         TrackingModule,
+        FahsModule,
         ActorModule,
         PlaceModule
     ],

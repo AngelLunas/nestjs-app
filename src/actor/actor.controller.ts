@@ -1,16 +1,15 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
 import { ActorService } from "./actor.service";
-import { CodaService } from "../coda/coda.service";
-import { BackendActorPlacesQuery, ActorQuery } from '@mtronic-llc/common';
+import { BackendActorPlacesQuery } from '@mtronic-llc/common';
 
 @Controller("actor")
 export class ActorController {
-    constructor(private readonly actorService: ActorService, private readonly codaService: CodaService) {}
-    @Get('data/availability/:page')
-    async runAvailability(@Param('page') page: string): Promise<any> {
+    constructor(private readonly actorService: ActorService) {}
+    @Get('data/availability')
+    async runAvailability(): Promise<any> {
         try {
-            const ids: string[] = await this.codaService.getIdsPage(page);
-            const data: any = await this.actorService.runActor({ids}, ActorQuery.AVAILABILITY);
+            const ids: string[] = ['51634704', '51020181', '824000980095369116'];
+            const data: any = await this.actorService.runActorAvailabilityQuery({ids});
             return data;
         } catch (error) {
             if (error instanceof HttpException) {
@@ -24,21 +23,23 @@ export class ActorController {
         }
     }
 
-    @Post('data/places') 
-    async runPlaces(@Body() body: BackendActorPlacesQuery): Promise<any> {
-        const { checkin, checkout, regions } = body;
-        const DateFormat = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
-    
-        if (regions == undefined || regions.length == 0 || regions[0] == '') {
-            throw new HttpException('No se especificaron regiones', 400);
-        }
+    @Get('data/places') 
+    async runPlaces (): Promise<any> {
+        //Fechas de prueba
+        const today = new Date();
+        const checkin = new Date(); //fecha de mañana
+        checkin.setDate(today.getDate() + 1);
+        const checkout = new Date(checkin); //fecha 6 días después de mañana
+        checkout.setDate(checkin.getDate() + 6);
 
-        if (checkin == undefined || checkout == undefined || !DateFormat.test(checkin) || !DateFormat.test(checkout)) {
-            throw new HttpException('Formato de fecha inválido (YYYY-MM-DD)', 400);
-        } 
+        const body: BackendActorPlacesQuery = {
+            regions: ['Miami'],
+            checkin: checkin.toISOString().split('T')[0],
+            checkout: checkout.toISOString().split('T')[0]
+        };
         
         try {
-            const data: any = await this.actorService.runActor({regions, checkin, checkout}, ActorQuery.PLACES);
+            const data: any = await this.actorService.runActorPlacesQuery(body);
             return data;
         } catch (error) {
             if (error instanceof HttpException) {
