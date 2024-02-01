@@ -18,7 +18,7 @@ export class FahsController {
                 throw error;
             } else {
                 throw new HttpException(
-                    'Error al obtener los datos del actor',
+                    'Error al obtener los datos del actor' + error.message,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                 );
             }
@@ -37,6 +37,12 @@ export class FahsController {
         if (checkin == undefined || checkout == undefined || !DateFormat.test(checkin) || !DateFormat.test(checkout)) {
             throw new HttpException('Formato de fecha inválido (YYYY-MM-DD)', 400);
         } 
+
+        const checkinDate = new Date(checkin);
+        const checkoutDate = new Date(checkout);
+        if (isNaN(checkinDate.getTime()) || isNaN(checkoutDate.getTime())) {
+            throw new HttpException('Alguna de las fechas no existe', 400);
+        }
         
         try {
             const data: any = await this.actorService.runActorPlacesQuery(body);

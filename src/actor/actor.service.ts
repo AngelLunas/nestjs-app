@@ -17,6 +17,7 @@ export class ActorService {
                 checkin: input.checkin,
                 checkout: input.checkout
             });
+            
             const { items } = await client.dataset(run.defaultDatasetId).listItems();
             return items;
         } catch (error) {
