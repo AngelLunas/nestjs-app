@@ -7,6 +7,7 @@ import * as filters from './coda.filters.json';
 @Injectable()
 export class CodaService {
     constructor(private configService: ConfigService) {}
+    //TODO: cambiar metodo y logica ser getIdsConPocoInteresOMas(): Promise<string[]> {
     public async getIdsPage(page: string): Promise<string[]> {
         const docId = this.configService.get<string>('CODA_DOC_ID'); //doc id de fahs,
         const tableId = viewsId[page]; // view id de la tabla de FAHS
