@@ -1,38 +1,35 @@
 import axios from 'axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { viewsId } from '../utils/constants';
 import * as filters from './coda.filters.json';
 
 @Injectable()
 export class CodaService {
     constructor(private configService: ConfigService) {}
     //TODO: cambiar metodo y logica ser getIdsConPocoInteresOMas(): Promise<string[]> {
-    public async getIdsPage(page: string): Promise<string[]> {
-        const docId = this.configService.get<string>('CODA_DOC_ID'); //doc id de fahs,
-        const tableId = viewsId[page]; // view id de la tabla de FAHS
+    public async getIdsOfPlacesWithLittleInterestOrMore(): Promise<string[]> {
+        const codaDocID = this.configService.get<string>('CODA_DOC_ID'); //doc id de fahs,
 
-        if (docId && tableId) {
+        if (codaDocID) {
             const codaApiKey = this.configService.get<string>('CODA_API_KEY'); // api key de fahs
             const headers: Record<string, string> = {
                 Authorization: `Bearer ${codaApiKey}`,
             };
-            let ids: string[] = [];
+            let placesId: string[] = [];
 
             try {
                 const response = await axios.get(
-                    `https://coda.io/apis/v1/docs/${docId}/tables/${tableId}/rows`,
+                    `https://coda.io/apis/v1/docs/${codaDocID}/tables/grid-54ktLB_93G/rows`,
                     {
                         headers,
                     },
                 );
                 //Para cada item, obtengo el id y lo agrego a un array
-                ids = response.data.items
+                placesId = response.data.items
                     .map((item: any) => {
-                        let currentId = item.values['c-OCMBG1whUA'];
-                        if (!currentId.includes('datosDePrueba')) {
-                            //Aplico filtros solamente para la página central que contiene todos los datos
-                            if (page === 'central') {
+                        let currentPlaceId = item.values['c-OCMBG1whUA'];
+                        if (!currentPlaceId.includes('datosDePrueba')) {
+                            //Aplico filtros definidos en el archivo coda.filters.json
                                 //convierto el precio a number
                                 let numberPrice = Number(item.values['c-P1PHzAXpXt'].replace(/[^0-9.-]+/g,""));
                                 item.values['c-P1PHzAXpXt'] = numberPrice;
@@ -40,22 +37,21 @@ export class CodaService {
                                 Object.entries(filters).forEach(([key, value]) => {
                                     if (value.type === 'max') {
                                         if (item.values[key] > value.value) {
-                                            currentId = null;
+                                            currentPlaceId = null;
                                         }
                                     } else if (value.type === 'min') {
                                         if (item.values[key] < value.value) {
-                                            currentId = null;
+                                            currentPlaceId = null;
                                         }
                                     } else if (value.type === 'list') {
                                         if (Array.isArray(value.value)) {
                                             if (!value.value.includes(item.values[key])) {
-                                                currentId = null;
+                                                currentPlaceId = null;
                                             }
                                         }
                                     }
                                 });
-                           }
-                            return currentId;
+                            return currentPlaceId;
                         }
                         return null;
                     }).filter((id: string) => id != null);
@@ -68,8 +64,8 @@ export class CodaService {
                 );
             }
 
-            if (ids.length > 0) {
-                return ids;
+            if (placesId.length > 0) {
+                return placesId;
             } else {
                 throw new HttpException(
                     'No existen datos que cumplan con los filtros',
@@ -78,7 +74,7 @@ export class CodaService {
             }
 
         } else {
-            throw new HttpException('La página no existe', 404);
+            throw new HttpException('Documento no encontrado', 404);
         }
     }
 }

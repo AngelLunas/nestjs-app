@@ -23,28 +23,12 @@ describe('CodaService', () => {
         expect(service).toBeDefined();
     });
 
-    it('should run getIdsPage without filters', async () => {
-        const result = await service.getIdsPage('datosiniciales');
-        expect(result).toBeDefined();
-        expect(result).toBeInstanceOf(Array);
-        expect(result.length).toBeGreaterThan(0);
-    }, 15000);
-
     it('should run getIdsPage with filters', async () => {
-        const result = await service.getIdsPage('central');
+        const result = await service.getIdsOfPlacesWithLittleInterestOrMore();
         expect(result).toBeDefined();
         expect(result).toBeInstanceOf(Array);
         expect(result.length).toBeGreaterThan(0);
     }, 15000);
-
-    it('should run getIdsPage with invalid page', async () => {
-        try {
-            const result = await service.getIdsPage('invalid');
-        } catch (error) {
-            expect(error).toBeDefined();
-            expect(error.message).toBe('La página no existe');
-        }
-    });
 
     it('should throw an error if no data matches the filters', async () => {
         // Spy on axios.get and mock its implementation
@@ -52,10 +36,28 @@ describe('CodaService', () => {
         getSpy.mockResolvedValue({ data: { items: [] } });
 
         try {
-            const result = await service.getIdsPage('central');
+            const result = await service.getIdsOfPlacesWithLittleInterestOrMore();
         } catch (error) {
             expect(error).toBeDefined();
             expect(error.message).toBe('No existen datos que cumplan con los filtros');
+        }
+
+        getSpy.mockRestore();
+      });
+
+      it('should throw an error if coda request fails', async () => {
+        const getSpy = jest.spyOn(axios, 'get');
+        getSpy.mockRejectedValue({
+            "statusCode": 401,
+            "statusMessage": "Unauthorized",
+            "message": "Unauthorized"
+        });
+
+        try {
+            const result = await service.getIdsOfPlacesWithLittleInterestOrMore();
+        } catch (error) {
+            expect(error).toBeDefined();
+            expect(error.message).toBe('Error al obtener los ids de la página');
         }
 
         getSpy.mockRestore();

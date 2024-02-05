@@ -28,18 +28,18 @@ export class ActorService {
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
     public async runActorAvailabilityQuery (input: BackendActorAvailabilityQuery): Promise<any> {
         try {
-            const apiKey = this.configService.get<string>('APIFY_API_KEY');
+            const apifyApiKey = this.configService.get<string>('APIFY_API_KEY');
 
             //TODO: cambiar client a apifyClient
-            const client = new ApifyClient({token: apiKey});
+            const apifyClient = new ApifyClient({token: apifyApiKey});
             //TODO: cambiar run a runActor
-            const run = await client.actor('ccJyNmz7QdWIahg10').call({
+            const runActor = await apifyClient.actor('ccJyNmz7QdWIahg10').call({
                 ids: input.ids,
                 bplaces: false
             });
             //TODO: cambiar items a airbnbPlaceCalendarObjects
-            const { items } = await client.dataset(run.defaultDatasetId).listItems();
-           return items;
+            const { items: airbnbPlaceCalendarObjects  } = await apifyClient.dataset(runActor.defaultDatasetId).listItems();
+           return airbnbPlaceCalendarObjects;
         } catch (error) {
             console.log(error);
             throw new HttpException('Error al ejecutar el actor', 500);

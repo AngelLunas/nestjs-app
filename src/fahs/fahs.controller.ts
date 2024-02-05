@@ -9,10 +9,10 @@ export class FahsController {
     //TODO: cambiar metodo y logica a
     // @Get('getAvailabilityOfPlacesOfInterest/') - note: tal vez hay manera usar nombre de metodo por defecto
     //     async getAvailabilityOfPlacesOfInterest(): Promise<any> {
-    @Get('actor/data/availability/:page')
-    async runAvailability(@Param('page') page: string): Promise<any> {
+    @Get('getAvailabilityOfPlacesOfInterest')
+    async getAvailabilityOfPlacesOfInterest(): Promise<any> {
         try {
-            const ids: string[] = await this.codaService.getIdsPage(page);
+            const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore();
             const input: BackendActorAvailabilityQuery = {ids};
             const data: any = await this.actorService.runActorAvailabilityQuery(input);
             //TODO: Derek implementar lógica de hooks en proyecto de api_availability_query para convertir en Object de
@@ -30,8 +30,8 @@ export class FahsController {
         }
     }
 
-    @Post('actor/data/places')
-    async runPlaces(@Body() body: BackendActorPlacesQuery): Promise<any> {
+    @Post('getAvailablePlacesFromRegions')
+    async getAvailablePlacesFromRegions(@Body() body: BackendActorPlacesQuery): Promise<any> {
         const { checkin, checkout, regions } = body;
         const DateFormat = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
 
