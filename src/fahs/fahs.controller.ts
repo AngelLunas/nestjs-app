@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
-import { ActorService } from "../com/service/actor.service";
+import { ActorService } from "../com/mtronic/fahs/service/actor.service";
 import { CodaService } from "../coda/coda.service";
 import { BackendActorPlacesQuery, BackendActorAvailabilityQuery } from '@mtronic-llc/common';
 
