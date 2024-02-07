@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { FahsController } from "./fahs.controller";
-import { ActorService } from "../com/actor/actor.service";
+import { ActorService } from "../com/service/actor.service";
 import { CodaService } from "../coda/coda.service";
 import { HttpException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
