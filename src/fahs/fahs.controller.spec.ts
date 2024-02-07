@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { FahsController } from "./fahs.controller";
-import { ActorService } from "../actor/actor.service";
+import { ActorService } from "../com/actor/actor.service";
 import { CodaService } from "../coda/coda.service";
 import { HttpException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -73,9 +73,9 @@ describe('FahsController', () => {
 
     it('should runPlaces with empty body', async () => {
         const mockBody = {};
-    
+
         jest.spyOn(actorService, 'runActorPlacesQuery').mockImplementation(() => Promise.resolve({}));
-    
+
         try {
             const result = await controller.getAvailablePlacesFromRegions(mockBody as BackendActorPlacesQuery);
         } catch (error) {
