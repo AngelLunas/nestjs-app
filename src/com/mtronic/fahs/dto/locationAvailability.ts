@@ -1,4 +1,4 @@
-import IMonthData from "./monthIf.js"
+import IMonthData from "./monthIf"
 
 interface ILocationAvailability {
     id: string,
