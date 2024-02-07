@@ -1,4 +1,4 @@
-export interface AirbnbCalendar {
+export interface AirbnbCalendarDto {
     data:       Data;
     extensions: Extensions;
 }

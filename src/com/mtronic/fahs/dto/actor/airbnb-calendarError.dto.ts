@@ -1,4 +1,4 @@
-export interface AirbnbCalendarError {
+export interface AirbnbCalendarErrorDto {
     errors: Error[];
     data:   null;
 }
