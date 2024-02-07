@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { FahsController } from "./fahs.controller";
-import { CodaModule } from "src/coda/coda.module";
-import { ActorModule } from "../com/mtronic/fahs/service/actor.module";
-import { ActorService } from "../com/mtronic/fahs/service/actor.service";
-import { CodaService } from "src/coda/coda.service";
+import { CodaModule } from "../../../../coda/coda.module";
+import { ActorModule } from "../service/actor.module";
+import { ActorService } from "../service/actor.service";
+import { CodaService } from "../../../../coda/coda.service";
 
 @Module({
     imports: [CodaModule, ActorModule],

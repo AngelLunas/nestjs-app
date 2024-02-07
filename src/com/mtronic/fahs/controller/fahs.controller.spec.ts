@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { FahsController } from "./fahs.controller";
-import { ActorService } from "../com/mtronic/fahs/service/actor.service";
-import { CodaService } from "../coda/coda.service";
+import { ActorService } from "../service/actor.service";
+import { CodaService } from "../../../../coda/coda.service";
 import { HttpException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from "@mtronic-llc/common";
