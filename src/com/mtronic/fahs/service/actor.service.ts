@@ -6,11 +6,11 @@ import { BackendActorPlacesQuery, BackendActorAvailabilityQuery } from '@mtronic
 @Injectable()
 export class ActorService {
     constructor (private configService: ConfigService) {}
-    public async runActorPlacesQuery (input: BackendActorPlacesQuery): Promise<any> {
+    public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<any> {
         try {
-            const apiKey = this.configService.get<string>('APIFY_API_KEY');
-            const client = new ApifyClient({token: apiKey});
-            const run = await client.actor('ccJyNmz7QdWIahg10').call({
+            const apifyApiKey = this.configService.get<string>('APIFY_API_KEY');
+            const apifyClient = new ApifyClient({token: apifyApiKey});
+            const runActor = await apifyClient.actor('ccJyNmz7QdWIahg10').call({
                 ids: ['00000'],
                 bplaces: true,
                 regions: input.regions,
@@ -18,7 +18,7 @@ export class ActorService {
                 checkout: input.checkout
             });
 
-            const { items } = await client.dataset(run.defaultDatasetId).listItems();
+            const { items } = await apifyClient.dataset(runActor.defaultDatasetId).listItems();
             return items;
         } catch (error) {
             console.log(error);
@@ -26,7 +26,7 @@ export class ActorService {
         }
     }
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
-    public async runActorAvailabilityQuery (input: BackendActorAvailabilityQuery): Promise<any> {
+    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<any> {
         try {
             const apifyApiKey = this.configService.get<string>('APIFY_API_KEY');
 
@@ -35,7 +35,6 @@ export class ActorService {
                 ids: input.ids,
                 bplaces: false
             });
-            //TODO: cambiar items a airbnbPlaceCalendarObjects
             const { items: airbnbPlaceCalendarObjects  } = await apifyClient.dataset(runActor.defaultDatasetId).listItems();
            return airbnbPlaceCalendarObjects;
         } catch (error) {

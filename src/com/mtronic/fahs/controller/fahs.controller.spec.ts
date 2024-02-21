@@ -46,7 +46,7 @@ describe('FahsController', () => {
     }, 100000); //100 seconds
 
     it('should runAvailability with 0 items in apify actor', async () => {
-        jest.spyOn(actorService, 'runActorAvailabilityQuery').mockResolvedValue([]);
+        jest.spyOn(actorService, 'getAvailabilityOfPlacesOfInterest').mockResolvedValue([]);
         const result = await controller.getAvailabilityOfPlacesOfInterest();
         expect(result).toBeDefined();
         expect(result).toBeInstanceOf(Array);
@@ -74,7 +74,7 @@ describe('FahsController', () => {
     it('should runPlaces with empty body', async () => {
         const mockBody = {};
 
-        jest.spyOn(actorService, 'runActorPlacesQuery').mockImplementation(() => Promise.resolve({}));
+        jest.spyOn(actorService, 'getAvailablePlacesFromRegions').mockImplementation(() => Promise.resolve({}));
 
         try {
             const result = await controller.getAvailablePlacesFromRegions(mockBody as BackendActorPlacesQuery);

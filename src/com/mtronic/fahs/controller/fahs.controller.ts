@@ -14,7 +14,7 @@ export class FahsController {
         try {
             const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore();
             const input: BackendActorAvailabilityQuery = {ids};
-            const data: any = await this.actorService.runActorAvailabilityQuery(input);
+            const data: any = await this.actorService.getAvailabilityOfPlacesOfInterest(input);
             //TODO: Derek implementar lógica de hooks en proyecto de api_availability_query para convertir en Object de
             // JSON que viene de Airbnb
             return data;
@@ -50,7 +50,7 @@ export class FahsController {
         }
 
         try {
-            const data: any = await this.actorService.runActorPlacesQuery(body);
+            const data: any = await this.actorService.getAvailablePlacesFromRegions(body);
             return data;
         } catch (error) {
             if (error instanceof HttpException) {
