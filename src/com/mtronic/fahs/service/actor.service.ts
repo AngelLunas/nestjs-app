@@ -30,9 +30,7 @@ export class ActorService {
         try {
             const apifyApiKey = this.configService.get<string>('APIFY_API_KEY');
 
-            //TODO: cambiar client a apifyClient
             const apifyClient = new ApifyClient({token: apifyApiKey});
-            //TODO: cambiar run a runActor
             const runActor = await apifyClient.actor('ccJyNmz7QdWIahg10').call({
                 ids: input.ids,
                 bplaces: false
