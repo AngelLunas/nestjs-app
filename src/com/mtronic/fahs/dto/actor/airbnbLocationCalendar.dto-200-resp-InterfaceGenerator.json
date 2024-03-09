@@ -1,0 +1,143 @@
+[
+  {
+    "id": "38132540",
+    "data": {
+      "data": {
+        "merlin": {
+          "__typename": "MerlinQuery",
+          "pdpAvailabilityCalendar": {
+            "__typename": "MerlinPdpAvailabilityCalendarResponse",
+            "calendarMonths": [
+              {
+                "__typename": "MerlinCalendarMonth",
+                "month": 2,
+                "year": 2024,
+                "days": [
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-01",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-02",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-03",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-04",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-05",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-06",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },
+                  {
+                    "__typename": "MerlinCalendarDay",
+                    "calendarDate": "2024-02-07",
+                    "available": false,
+                    "maxNights": 1125,
+                    "minNights": 1,
+                    "availableForCheckin": false,
+                    "availableForCheckout": false,
+                    "bookable": null,
+                    "price": {
+                      "__typename": "MerlinCalendarDayPrice",
+                      "localPriceFormatted": null
+                    }
+                  },                  {
+                    "__typename": "MerlinCalendarConditionRange",
+                    "conditions": {
+                      "__typename": "MerlinCalendarConditions",
+                      "closedToArrival": false,
+                      "closedToDeparture": false,
+                      "endDayOfWeek": null,
+                      "maxNights": 90,
+                      "minNights": 31
+                    },
+                    "startDate": "2025-01-31",
+                    "endDate": "2025-01-31"
+                  }
+                ],
+                "listingId": "38132540"
+              }
+            ],
+            "metadata": {
+              "__typename": "MerlinCalendarMonthMetadata",
+              "constantMinNights": null,
+              "onlyShowAvailableForCheckinOnDatepicker": false
+            }
+          }
+        }
+      },
+      "extensions": {
+        "traceId": "p1v3YOH_-ccCWNt5s4hcjA=="
+      }
+    }
+  }
+]

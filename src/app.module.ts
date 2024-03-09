@@ -4,9 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CodaModule } from './coda/coda.module';
 import { TrackingModule } from './tracking/tracking.module';
-import { ActorModule } from './actor/actor.module';
+import { ActorModule } from './com/mtronic/fahs/service/actor.module';
 import { PlaceModule } from './place/place.module';
-import { FahsModule } from './fahs/fahs.module';
+import { FahsModule } from './com/mtronic/fahs/controller/fahs.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({

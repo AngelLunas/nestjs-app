@@ -11,7 +11,13 @@ async function bootstrap() {
         optionsSuccessStatus: 204,
     };
     app.enableCors(options);
-    console.log('Listening on port 3001');
-    await app.listen(3001);
+    const ENV =  process.env.NODE_ENV;
+    if (ENV === 'test') {
+        console.log('Listening on port 3002');
+        await app.listen(3002);
+    }else{
+        console.log('Listening on port 3001');
+        await app.listen(3001);
+    }
 }
 bootstrap();
