@@ -6,18 +6,28 @@ import { HttpException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from "@mtronic-llc/common";
 import * as dotenv from 'dotenv';
+import {WireMock} from "wiremock-captain";
+import * as airbnbLocationCalendarDto200RespSAMPLE from "../../../../../test/resources/actor/airbnbLocationCalendar.dto-200-resp-SAMPLE.json";
+import { getActorServerUrl } from "../../../../utils/utils";
+import {AirbnbCalendarMapper} from "../mapper/airbnb-calendar.mapper";
 
-describe('FahsController', () => {
+
+describe('FahsController (e2e)', () => {
     let controller: FahsController;
     let actorService: ActorService;
     let codaService: CodaService;
+    let configService: ConfigService
+
+    const wiremockUrl = getActorServerUrl();
+    const wireMockServer = new WireMock(wiremockUrl);
+    const ENDPOINT = '/getAvailabilityOfPlacesOfInterest';
 
     beforeEach(async () => {
         dotenv.config();
 
         const module: TestingModule = await Test.createTestingModule({
             controllers: [FahsController],
-            providers: [ActorService, CodaService, ConfigService],
+            providers: [ActorService, CodaService, ConfigService, AirbnbCalendarMapper],
         }).compile();
 
         controller = module.get<FahsController>(FahsController);
@@ -29,11 +39,22 @@ describe('FahsController', () => {
         expect(controller).toBeDefined();
     });
 
-    it('should runAvailability', async () => {
-        const result = await controller.getAvailabilityOfPlacesOfInterest();
-        expect(result).toBeDefined();
-        expect(result).toBeInstanceOf(Array);
-        expect(result.length).toBeGreaterThan(0);
+    it('GET /getAvailabilityOfPlacesOfInterest - should return availability of locations', async () => {
+        await wireMockServer.register(
+            {endpoint: ENDPOINT, method: 'GET'},
+            {
+                status: 200,
+                body: airbnbLocationCalendarDto200RespSAMPLE
+            },
+        );
+
+        //TODO: Cambiar llamar endpoint con axios
+        const locationAvailabilityDtos = await controller.getAvailabilityOfPlacesOfInterest();
+        //TODO: Derek - verfificar que todo los properties de locationAvailabilityDtos sean llenados
+        expect(locationAvailabilityDtos).toBeDefined();
+        expect(locationAvailabilityDtos).toBeInstanceOf(Array);
+        expect(locationAvailabilityDtos.length).toBeGreaterThan(0);
+        console.log(JSON.stringify(locationAvailabilityDtos, null, 2));
     }, 200000); // 200 seconds
 
     it('should runAvailability with 0 items', async () => {

@@ -1,23 +1,19 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
-import { ActorService } from "../service/actor.service";
-import { CodaService } from "../../../../coda/coda.service";
-import { BackendActorPlacesQuery, BackendActorAvailabilityQuery } from '@mtronic-llc/common';
+import {Body, Controller, Get, HttpException, HttpStatus, Post} from "@nestjs/common";
+import {ActorService} from "../service/actor.service";
+import {CodaService} from "../../../../coda/coda.service";
+import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 
 @Controller("fahs")
 export class FahsController {
     constructor (private readonly actorService: ActorService, private readonly codaService: CodaService) {}
-    //TODO: cambiar metodo y logica a
-    // @Get('getAvailabilityOfPlacesOfInterest/') - note: tal vez hay manera usar nombre de metodo por defecto
-    //     async getAvailabilityOfPlacesOfInterest(): Promise<any> {
+
     @Get('getAvailabilityOfPlacesOfInterest')
-    async getAvailabilityOfPlacesOfInterest(): Promise<any> {
+    async getAvailabilityOfPlacesOfInterest(): Promise<AvailabilityData[]> {
         try {
-            const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore();
+            //const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore(); //TODO: intercambiar por llamada a datos de prueba para desarrollo
+            const ids: string[] = ['39925068', '38132540', /*'44521091', '35460354','51843505'*/]; //TODO: intercambiar por llamada a coda para produccion
             const input: BackendActorAvailabilityQuery = {ids};
-            const data: any = await this.actorService.getAvailabilityOfPlacesOfInterest(input);
-            //TODO: Derek implementar lógica de hooks en proyecto de api_availability_query para convertir en Object de
-            // JSON que viene de Airbnb
-            return data;
+            return await this.actorService.getAvailabilityOfPlacesOfInterest(input);
         } catch (error) {
             if (error instanceof HttpException) {
                 throw error;
