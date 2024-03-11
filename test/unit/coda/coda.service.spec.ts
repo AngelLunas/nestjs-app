@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';  
 import axios from 'axios';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CodaService } from './coda.service';
+import { CodaService } from '../../../src/coda/coda.service';
 import { ConfigService } from '@nestjs/config';
 
 describe('CodaService', () => {
