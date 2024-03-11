@@ -16,7 +16,7 @@ describe('AppController', () => {
 
     describe('root', () => {
         it('should return "Hello World!"', () => {
-            expect(appController.getHello()).toBe('Hello World!');
+            expect(appController.getHello()).toEqual({"año": 2023, "mes": 12, "porcentajeDisponibilidad": 98});
         });
     });
 });

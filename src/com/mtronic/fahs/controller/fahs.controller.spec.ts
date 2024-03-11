@@ -62,7 +62,7 @@ describe('FahsController (e2e)', () => {
             'No existen datos que cumplan con los filtros',
             404,
         );
-        jest.spyOn(codaService, 'getIdsOfPlacesWithLittleInterestOrMore').mockRejectedValue(error);
+        jest.spyOn(actorService, 'getAvailabilityOfPlacesOfInterest').mockRejectedValue(error);
         await expect(controller.getAvailabilityOfPlacesOfInterest()).rejects.toEqual(error);
     }, 100000); //100 seconds
 
