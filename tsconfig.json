@@ -23,6 +23,5 @@
     }
   },
   "include": [
-    "./src/**/*"
-, "test/unit/app.controller.spec.ts", "test/unit/coda/coda.service.spec.ts", "test/unit/com/mtronic/fahs/controller/fahs.controller.spec.ts", "test/unit/com/mtronic/fahs/service/actor.service.spec.ts"  ]
+    "./src/**/*"]
 }

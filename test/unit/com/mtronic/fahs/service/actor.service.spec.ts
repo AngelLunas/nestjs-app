@@ -5,6 +5,7 @@ import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from '@mtronic-llc/common';
 
 describe('ActorService', () => {
+    console.log('moving');
     let service: ActorService;
     let configService: ConfigService;
 
