@@ -2,6 +2,7 @@ import {Body, Controller, Get, HttpException, HttpStatus, Post} from "@nestjs/co
 import {ActorService} from "../service/actor.service";
 import {CodaService} from "../../../../coda/coda.service";
 import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
+import {StaySearchAvailibilityByCityDtos} from "@mtronic-llc/common-test";
 
 @Controller("fahs")
 export class FahsController {
@@ -27,7 +28,7 @@ export class FahsController {
     }
 
     @Post('getAvailablePlacesFromRegions')
-    async getAvailablePlacesFromRegions(@Body() body: BackendActorPlacesQuery): Promise<any> {
+    async getAvailablePlacesFromRegions(@Body() body: BackendActorPlacesQuery): Promise<StaySearchAvailibilityByCityDtos[]> {
         const { checkin, checkout, regions } = body;
         const DateFormat = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
 
@@ -46,7 +47,7 @@ export class FahsController {
         }
 
         try {
-            const data: any = await this.actorService.getAvailablePlacesFromRegions(body);
+            const data: StaySearchAvailibilityByCityDtos[] = await this.actorService.getAvailablePlacesFromRegions(body);
             return data;
         } catch (error) {
             if (error instanceof HttpException) {

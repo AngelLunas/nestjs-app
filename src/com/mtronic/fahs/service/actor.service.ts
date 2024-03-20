@@ -2,29 +2,45 @@ import {HttpException, Injectable} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
 import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
+import {StaySearchAvailibilityByCityDtos} from "@mtronic-llc/common-test";
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
+import {AirbnbStaySearchDto} from "../dto/actor/airbnb-stay-search.dto";
 import {getActorServerUrl} from "../../../../utils/utils";
 import {AirbnbCalendarMapper} from "../mapper/airbnb-calendar.mapper";
+import {AirbnbStaySearchMapper} from "../mapper/airbnb-stay-search.mapper";
 
 @Injectable()
 export class ActorService {
-    constructor (private configService: ConfigService, private airbnbCalendarMapper: AirbnbCalendarMapper) {}
-    public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<any> {
-        try {
-            const apifyApiKey = this.configService.get<string>('APIFY_API_KEY');
-            const apifyClient = new ApifyClient({token: apifyApiKey});
-            const runActor = await apifyClient.actor('ccJyNmz7QdWIahg10').call({
-                ids: ['00000'],
-                bplaces: true,
-                regions: input.regions,
-                checkin: input.checkin,
-                checkout: input.checkout
-            });
+    constructor (private configService: ConfigService, private airbnbCalendarMapper: AirbnbCalendarMapper, private airbnbStaySearchMapper: AirbnbStaySearchMapper) {}
+    public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<StaySearchAvailibilityByCityDtos[]> {
+        let airbnbStaySearchDto: AirbnbStaySearchDto[];
+        const ENDPOINT = '/getAvailablePlacesFromRegions';
+        const ENV =  process.env.NODE_ENV;
 
-            const { items } = await apifyClient.dataset(runActor.defaultDatasetId).listItems();
-            return items;
+        try {
+            console.log('this is the ' + ENV + ' environment');
+            if (ENV === 'test') {
+                const airbnbStaySearchAxiosResponse = await axios.get<AirbnbStaySearchDto[]>(getActorServerUrl() + ENDPOINT);
+                if (airbnbStaySearchAxiosResponse.status === 200)
+                    airbnbStaySearchDto = airbnbStaySearchAxiosResponse.data as AirbnbStaySearchDto[];
+            } else {
+                const apifyApiKey = this.configService.get<string>('APIFY_API_KEY');
+                const apifyClient = new ApifyClient({token: apifyApiKey});
+                const runActor = await apifyClient.actor('ccJyNmz7QdWIahg10').call({
+                    ids: ['00000'],
+                    bplaces: true,
+                    regions: input.regions,
+                    checkin: input.checkin,
+                    checkout: input.checkout
+                });
+
+                const { items: apifyClientAirbnbStaySearchResponseArry } = await apifyClient.dataset(runActor.defaultDatasetId).listItems();
+                airbnbStaySearchDto = apifyClientAirbnbStaySearchResponseArry as unknown as AirbnbStaySearchDto[];
+            }
+            
+            return this.airbnbStaySearchMapper.mapAirbnbStaySearchDtoToPlaceOfInterestAvailabilityDto(airbnbStaySearchDto);
         } catch (error) {
             console.log(error);
             throw new HttpException('Error al ejecutar el actor', 500);
