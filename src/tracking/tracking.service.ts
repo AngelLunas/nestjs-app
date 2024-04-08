@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { AvailabilityData } from '@mtronic-llc/common';
+import { LocationAvailabilityDtos } from '@mtronic-llc/common';
 
 @Injectable()
 export class TrackingService {
-    public GetPlaces(): AvailabilityData[] {
+    public GetPlaces(): LocationAvailabilityDtos[] {
         return [
             {
-                kind: 'availabilityData',
+                kind: 'LocationAvailabilityDtos',
                 id: '560919853699312657',
                 proxSeisMeses: 91,
                 meses: [
@@ -73,7 +73,7 @@ export class TrackingService {
                 ],
             },
             {
-                kind: 'availabilityData',
+                kind: 'LocationAvailabilityDtos',
                 id: '53893243',
                 proxSeisMeses: 82,
                 meses: [
@@ -140,7 +140,7 @@ export class TrackingService {
                 ],
             },
             {
-                kind: 'availabilityData',
+                kind: 'LocationAvailabilityDtos',
                 id: '39197557',
                 proxSeisMeses: 52,
                 meses: [
@@ -207,7 +207,7 @@ export class TrackingService {
                 ],
             },
             {
-                kind: 'availabilityData',
+                kind: 'LocationAvailabilityDtos',
                 id: '855656973408048584',
                 proxSeisMeses: 4,
                 meses: [

@@ -3,6 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { ActorService } from "../../../../../../src/com/mtronic/fahs/service/actor.service";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from '@mtronic-llc/common';
+import { AirbnbCalendarMapper } from '../mapper/airbnb-calendar.mapper';
 
 describe('ActorService', () => {
     console.log('moving');
@@ -13,7 +14,7 @@ describe('ActorService', () => {
         dotenv.config();
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [ActorService, ConfigService],
+            providers: [ActorService, ConfigService, AirbnbCalendarMapper],
         }).compile();
 
         service = module.get<ActorService>(ActorService);
