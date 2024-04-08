@@ -1,6 +1,6 @@
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
 import {Injectable} from "@nestjs/common";
-import {AvailabilityData, MonthData} from '@mtronic-llc/common';
+import {LocationAvailabilityDtos, MonthData} from '@mtronic-llc/common';
 
 
 
@@ -8,8 +8,8 @@ import {AvailabilityData, MonthData} from '@mtronic-llc/common';
 export class AirbnbCalendarMapper {
     mapAirbnbLocationCalendarDtoToLocationAvailabilityDto(
         //TODO: Derek - cambiar nombre de AvailabilityData a LocationAvailabilityDto & MonthData a MonthDataDto
-        airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[]): AvailabilityData[] {
-        let locationAvailabilityDtos: AvailabilityData[] = [];
+        airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[]): LocationAvailabilityDtos[] {
+        let locationAvailabilityDtos: LocationAvailabilityDtos[] = [];
         airbnbLocationCalendarDtos.map(airbnbLocationCalendarDto => {
             const monthDataDtos: MonthData[] = airbnbLocationCalendarDto.data.data.merlin.pdpAvailabilityCalendar.calendarMonths.map(
                 calendarMonth => {
