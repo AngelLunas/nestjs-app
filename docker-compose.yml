@@ -1,13 +1,11 @@
-version: '1.0'
-
 services:
-  wiremock: 
+  wiremock:
     image: wiremock/wiremock
     ports:
       - "8080:8080"
     container_name: wiremock
-  
-  mongodb: 
+
+  mongodb:
     image: mongo
     ports:
       - "27017:27017"
