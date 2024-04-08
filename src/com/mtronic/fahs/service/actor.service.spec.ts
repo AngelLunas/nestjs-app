@@ -1,12 +1,11 @@
 import * as dotenv from 'dotenv';
 import { Test, TestingModule } from "@nestjs/testing";
-import { ActorService } from "../../../../../../src/com/mtronic/fahs/service/actor.service";
+import { ActorService } from "./actor.service";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from '@mtronic-llc/common';
 import { AirbnbCalendarMapper } from '../mapper/airbnb-calendar.mapper';
 
 describe('ActorService', () => {
-    console.log('moving');
     let service: ActorService;
     let configService: ConfigService;
 

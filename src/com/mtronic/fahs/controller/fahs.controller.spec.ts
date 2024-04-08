@@ -1,15 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { FahsController } from "../../../../../../src/com/mtronic/fahs/controller/fahs.controller";
-import { ActorService } from "../../../../../../src/com/mtronic/fahs/service/actor.service";
-import { CodaService } from "../../../../../../src/coda/coda.service";
+import { FahsController } from "./fahs.controller";
+import { ActorService } from "../service/actor.service";
+import { CodaService } from "../../../../coda/coda.service";
 import { HttpException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from "@mtronic-llc/common";
 import * as dotenv from 'dotenv';
 import {WireMock} from "wiremock-captain";
-import * as airbnbLocationCalendarDto200RespSAMPLE from "../../../../../resources/actor/airbnbLocationCalendar.dto-200-resp-SAMPLE.json";
-import { getActorServerUrl } from "../../../../../../src/utils/utils";
-import {AirbnbCalendarMapper} from "../../../../../../src/com/mtronic/fahs/mapper/airbnb-calendar.mapper";
+import * as airbnbLocationCalendarDto200RespSAMPLE from "../../../../../test/resources/actor/airbnbLocationCalendar.dto-200-resp-SAMPLE.json";
+import { getActorServerUrl } from "../../../../utils/utils";
+import {AirbnbCalendarMapper} from "../mapper/airbnb-calendar.mapper";
 
 
 describe('FahsController (e2e)', () => {
