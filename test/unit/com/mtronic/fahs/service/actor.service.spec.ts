@@ -3,7 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { ActorService } from "../../../../../../src/com/mtronic/fahs/service/actor.service";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from '@mtronic-llc/common';
-import { AirbnbCalendarMapper } from '../mapper/airbnb-calendar.mapper';
+import { AirbnbCalendarMapper } from "../../../../../../src/com/mtronic/fahs/mapper/airbnb-calendar.mapper";
 
 describe('ActorService', () => {
     console.log('moving');

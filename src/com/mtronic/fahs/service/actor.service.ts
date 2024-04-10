@@ -1,7 +1,7 @@
 import {HttpException, Injectable} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
-import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
+import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
@@ -31,7 +31,7 @@ export class ActorService {
         }
     }
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
-    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<AvailabilityData[]> {
+    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtos[]> {
         const ENDPOINT = '/getAvailabilityOfPlacesOfInterest';
         const ENV =  process.env.NODE_ENV;
         let airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[];
