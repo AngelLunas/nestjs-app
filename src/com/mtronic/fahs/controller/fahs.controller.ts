@@ -1,14 +1,14 @@
 import {Body, Controller, Get, HttpException, HttpStatus, Post} from "@nestjs/common";
 import {ActorService} from "../service/actor.service";
 import {CodaService} from "../../../../coda/coda.service";
-import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
+import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 
 @Controller("fahs")
 export class FahsController {
     constructor (private readonly actorService: ActorService, private readonly codaService: CodaService) {}
 
     @Get('getAvailabilityOfPlacesOfInterest')
-    async getAvailabilityOfPlacesOfInterest(): Promise<AvailabilityData[]> {
+    async getAvailabilityOfPlacesOfInterest(): Promise<LocationAvailabilityDtos[]> {
         try {
             //const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore(); //TODO: intercambiar por llamada a datos de prueba para desarrollo
             const ids: string[] = ['39925068', '38132540', /*'44521091', '35460354','51843505'*/]; //TODO: intercambiar por llamada a coda para produccion
