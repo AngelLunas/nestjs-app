@@ -15,7 +15,7 @@ import {AirbnbCalendarMapper} from "../../../../../../src/com/mtronic/fahs/mappe
 import { AirbnbStaySearchMapper } from "../../../../../../src/com/mtronic/fahs/mapper/airbnb-stay-search.mapper";
 
 
-describe('FahsController (e2e)', () => {
+describe('FahsController (unit)', () => {
     let controller: FahsController;
     let actorService: ActorService;
     let codaService: CodaService;
@@ -45,6 +45,7 @@ describe('FahsController (e2e)', () => {
 
     it('should be defined', () => {
         expect(controller).toBeDefined();
+        console.log(airbnbLocationCalendarDto200RespSAMPLE, 'airbnbLocationCalendarDto200RespSAMPLE')
     });
 
     it('GET /getAvailabilityOfPlacesOfInterest - should return availability of locations', async () => {
@@ -62,7 +63,7 @@ describe('FahsController (e2e)', () => {
         expect(locationAvailabilityDtos).toBeDefined();
         expect(locationAvailabilityDtos).toBeInstanceOf(Array);
         expect(locationAvailabilityDtos.length).toBeGreaterThan(0);
-        console.log(JSON.stringify(locationAvailabilityDtos, null, 2));
+        console.log(JSON.stringify(locationAvailabilityDtos, null, 2), 'getAvailabilityOfPlacesOfInterest');
     }, 200000); // 200 seconds
 
     //Desactivada temporalmente mientras se separa la llamada para obtener los ids a coda para producción
@@ -71,7 +72,7 @@ describe('FahsController (e2e)', () => {
             'No existen datos que cumplan con los filtros',
             404,
         );
-        jest.spyOn(codaService, 'getIdsOfPlacesWithLittleInterestOrMore').mockRejectedValue(error);
+        jest.spyOn(actorService, 'getAvailabilityOfPlacesOfInterest').mockRejectedValue(error);
         await expect(controller.getAvailabilityOfPlacesOfInterest()).rejects.toEqual(error);
     }, 100000); //100 seconds*/
 
@@ -81,56 +82,6 @@ describe('FahsController (e2e)', () => {
         expect(result).toBeDefined();
         expect(result).toBeInstanceOf(Array);
     }, 100000); //100 seconds
-
-    it('GET /getAvailablePlacesFromRegions - should return available places of interest', async () => {
-        await wireMockServer.register(
-            {endpoint: '/getAvailablePlacesFromRegions', method: 'GET'},
-            {
-                status: 200,
-                body: airbnbStaySearchDto200RespSAMPLE
-            },
-        );
-        
-        const today = new Date();
-        const checkin = new Date(); //fecha de mañana
-        checkin.setDate(today.getDate() + 1);
-        const checkout = new Date(checkin); //fecha 6 días después de mañana
-        checkout.setDate(checkin.getDate() + 6);
-
-        const body = {
-            checkin: checkin.toISOString().split('T')[0],
-            checkout: checkout.toISOString().split('T')[0],
-            regions: ['Miami']
-        };
-
-        const placesOfInterestAvailabilityDtos = await controller.getAvailablePlacesFromRegions(body);
-        //TODO: Derek - verfificar que todo los properties de placesOfInterestAvailabilityDtos sean llenados
-        expect(placesOfInterestAvailabilityDtos).toBeDefined();
-        expect(placesOfInterestAvailabilityDtos).toBeInstanceOf(Array);
-        expect(placesOfInterestAvailabilityDtos.length).toBeGreaterThan(0);
-        console.log(JSON.stringify(placesOfInterestAvailabilityDtos, null, 2));
-    }, 200000); // 200 seconds
-
-    it('should runPlaces with inexistent region', async () => {
-        try {
-            const result = await controller.getAvailablePlacesFromRegions({ checkin: '2021-01-01', checkout: '2021-01-07', regions: ['nulls'] });
-        } catch (error) {
-            //Debo de lanzar el error de región inexistente desde el actor de Apify
-            expect(error).toBeInstanceOf(HttpException);
-        }
-    }, 100000);
-
-    it('should runPlaces with inexistent dates', async () => {
-        const error = new HttpException('Alguna de las fechas no existe', 400);
-        const result = controller.getAvailablePlacesFromRegions({ checkin: '2024-13-02', checkout: '2024-13-12', regions: ['Miami'] });
-        await expect(result).rejects.toEqual(error);
-    });
-
-    it('should runPlaces with invalid date format', async () => {
-        const error = new HttpException('Formato de fecha inválido (YYYY-MM-DD)', 400);
-        const result = controller.getAvailablePlacesFromRegions({ checkin: '2024/12-13', checkout: '2024/12/11', regions: ['Miami'] });
-        await expect(result).rejects.toEqual(error);
-    });
 
     it('should throw an error if the airbnb request fails', async () => {
         await wireMockServer.register(
@@ -158,5 +109,46 @@ describe('FahsController (e2e)', () => {
         } catch (error) {
             expect(error).toBeInstanceOf(HttpException);
         }
+    });
+
+    it('GET /getAvailablePlacesFromRegions - should return available places of interest', async () => {
+        await wireMockServer.register(
+            {endpoint: '/getAvailablePlacesFromRegions', method: 'GET'},
+            {
+                status: 200,
+                body: airbnbStaySearchDto200RespSAMPLE
+            },
+        );
+        
+        const today = new Date();
+        const checkin = new Date(); //fecha de mañana
+        checkin.setDate(today.getDate() + 1);
+        const checkout = new Date(checkin); //fecha 6 días después de mañana
+        checkout.setDate(checkin.getDate() + 6);
+
+        const body = {
+            checkin: checkin.toISOString().split('T')[0],
+            checkout: checkout.toISOString().split('T')[0],
+            regions: ['Miami']
+        };
+
+        const placesOfInterestAvailabilityDtos = await controller.getAvailablePlacesFromRegions(body);
+        //TODO: Derek - verfificar que todo los properties de placesOfInterestAvailabilityDtos sean llenados
+        expect(placesOfInterestAvailabilityDtos).toBeDefined();
+        expect(placesOfInterestAvailabilityDtos).toBeInstanceOf(Array);
+        expect(placesOfInterestAvailabilityDtos.length).toBeGreaterThan(0);
+        console.log(JSON.stringify(placesOfInterestAvailabilityDtos, null, 2), 'getAvailablePlacesFromRegions');
+    }, 200000); // 200 seconds
+
+    it('should runPlaces with inexistent dates', async () => {
+        const error = new HttpException('Alguna de las fechas no existe', 400);
+        const result = controller.getAvailablePlacesFromRegions({ checkin: '2024-13-02', checkout: '2024-13-12', regions: ['Miami'] });
+        await expect(result).rejects.toEqual(error);
+    });
+
+    it('should runPlaces with invalid date format', async () => {
+        const error = new HttpException('Formato de fecha inválido (YYYY-MM-DD)', 400);
+        const result = controller.getAvailablePlacesFromRegions({ checkin: '2024/12-13', checkout: '2024/12/11', regions: ['Miami'] });
+        await expect(result).rejects.toEqual(error);
     });
 });

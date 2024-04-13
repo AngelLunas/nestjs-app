@@ -1,15 +1,15 @@
 import {Body, Controller, Get, HttpException, HttpStatus, Post} from "@nestjs/common";
 import {ActorService} from "../service/actor.service";
 import {CodaService} from "../../../../coda/coda.service";
-import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 import {StaySearchAvailibilityByCityDtos} from "@mtronic-llc/common-test";
+import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 
 @Controller("fahs")
 export class FahsController {
     constructor (private readonly actorService: ActorService, private readonly codaService: CodaService) {}
 
     @Get('getAvailabilityOfPlacesOfInterest')
-    async getAvailabilityOfPlacesOfInterest(): Promise<AvailabilityData[]> {
+    async getAvailabilityOfPlacesOfInterest(): Promise<LocationAvailabilityDtos[]> {
         try {
             //const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore(); //TODO: intercambiar por llamada a datos de prueba para desarrollo
             const ids: string[] = ['39925068', '38132540', /*'44521091', '35460354','51843505'*/]; //TODO: intercambiar por llamada a coda para produccion
@@ -50,14 +50,11 @@ export class FahsController {
             const data: StaySearchAvailibilityByCityDtos[] = await this.actorService.getAvailablePlacesFromRegions(body);
             return data;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            } else {
-                throw new HttpException(
-                    'Error al obtener los datos del actor',
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                );
-            }
+            console.error(error);
+            throw new HttpException(
+                'Error al obtener los datos del actor',
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
     }
 }

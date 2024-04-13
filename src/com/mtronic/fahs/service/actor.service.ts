@@ -1,8 +1,8 @@
 import {HttpException, Injectable} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
-import {AvailabilityData, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 import {StaySearchAvailibilityByCityDtos} from "@mtronic-llc/common-test";
+import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
@@ -42,12 +42,12 @@ export class ActorService {
             
             return this.airbnbStaySearchMapper.mapAirbnbStaySearchDtoToPlaceOfInterestAvailabilityDto(airbnbStaySearchDto);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             throw new HttpException('Error al ejecutar el actor', 500);
         }
     }
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
-    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<AvailabilityData[]> {
+    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtos[]> {
         const ENDPOINT = '/getAvailabilityOfPlacesOfInterest';
         const ENV =  process.env.NODE_ENV;
         let airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[];
@@ -77,7 +77,7 @@ export class ActorService {
             return this.airbnbCalendarMapper
                 .mapAirbnbLocationCalendarDtoToLocationAvailabilityDto(airbnbLocationCalendarDtos);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             throw new HttpException('Error al ejecutar el actor', 500);
         }
     }

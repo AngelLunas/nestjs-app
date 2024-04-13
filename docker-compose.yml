@@ -1,0 +1,12 @@
+services:
+  wiremock:
+    image: wiremock/wiremock
+    ports:
+      - "8080:8080"
+    container_name: wiremock
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: mongodb
