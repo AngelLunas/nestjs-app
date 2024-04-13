@@ -28,6 +28,7 @@ lerna-debug.log*
 *.sublime-workspace
 .npmrc
 /.npmrc
+npmrc
 
 # IDE - VSCode
 .vscode/*
