@@ -42,6 +42,14 @@ export class FahsController {
 
         const checkinDate = new Date(checkin);
         const checkoutDate = new Date(checkout);
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        
+        if (checkinDate < currentDate || checkoutDate < currentDate) {
+            throw new HttpException('Fechas inválidas', 400);
+        }
+
+
         if (isNaN(checkinDate.getTime()) || isNaN(checkoutDate.getTime())) {
             throw new HttpException('Alguna de las fechas no existe', 400);
         }

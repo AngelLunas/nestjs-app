@@ -43,7 +43,11 @@ export class ActorService {
             return this.airbnbStaySearchMapper.mapAirbnbStaySearchDtoToPlaceOfInterestAvailabilityDto(airbnbStaySearchDto);
         } catch (error) {
             console.error(error);
-            throw new HttpException('Error al ejecutar el actor', 500);
+            if (error instanceof HttpException) {
+                throw error;
+            } else {
+                throw new HttpException('Error al ejecutar el actor', 500);
+            }
         }
     }
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
