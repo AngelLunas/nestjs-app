@@ -1,7 +1,7 @@
-import {HttpException, Injectable} from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
-import {StaySearchAvailibilityByCityDtos} from "@mtronic-llc/common-test";
+import {LocationsByRegion} from "@mtronic-llc/common-test";
 import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";
@@ -14,7 +14,7 @@ import {AirbnbStaySearchMapper} from "../mapper/airbnb-stay-search.mapper";
 @Injectable()
 export class ActorService {
     constructor (private configService: ConfigService, private airbnbCalendarMapper: AirbnbCalendarMapper, private airbnbStaySearchMapper: AirbnbStaySearchMapper) {}
-    public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<StaySearchAvailibilityByCityDtos[]> {
+    public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<LocationsByRegion[]> {
         let airbnbStaySearchDto: AirbnbStaySearchDto[];
         const ENDPOINT = '/getAvailablePlacesFromRegions';
         const ENV =  process.env.NODE_ENV;

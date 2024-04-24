@@ -1,5 +1,5 @@
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
-import {Injectable} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import {LocationAvailabilityDtos, MonthData} from '@mtronic-llc/common';
 
 

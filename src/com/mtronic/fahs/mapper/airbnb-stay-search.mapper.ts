@@ -1,26 +1,34 @@
 import {AirbnbStaySearchDto} from "../dto/actor/airbnb-stay-search.dto";
-import {HttpException, Injectable} from "@nestjs/common";
-import {PlaceOfInterestAvailabilityDtos, StaySearchAvailibilityByCityDtos} from "@mtronic-llc/common-test";
+import { HttpException, Injectable } from "@nestjs/common";
+import {LocationDetailsDtos, LocationsByRegion} from "@mtronic-llc/common-test";
 
 @Injectable()
 export class AirbnbStaySearchMapper {
     mapAirbnbStaySearchDtoToPlaceOfInterestAvailabilityDto(
-        airbnbStaySearchDtos: AirbnbStaySearchDto[]): StaySearchAvailibilityByCityDtos[] {
-        let staysSearchAvailibilityByCityDtos: StaySearchAvailibilityByCityDtos[] = [];
+        airbnbStaySearchDtos: AirbnbStaySearchDto[]): LocationsByRegion[] {
+        let staysSearchAvailibilityByCityDtos: LocationsByRegion[] = [];
         try {
             airbnbStaySearchDtos.map(airbnbStaySearchDto => {
                 const city = airbnbStaySearchDto.city;
-                const staySearchAvailibilityByCityDtos: StaySearchAvailibilityByCityDtos = {
+                const staySearchAvailibilityByCityDtos: LocationsByRegion = {
                     city, 
                     places: airbnbStaySearchDto.data.data.presentation.explore.sections.sectionIndependentData.staysSearch.searchResults.map(
                         searchResult => {
                             if (!searchResult.listing || !searchResult.listing.id || !searchResult.listing.city || !searchResult.listing.name) {
                                 throw new HttpException('Error al mapear los resultados de la busqueda', 500);
                             }
-                            const parsedPlaceOfInterestAvailabilityDtos = new PlaceOfInterestAvailabilityDtos(
+                            let totalPrice = searchResult.pricingQuote?.structuredStayDisplayPrice?.secondaryLine?.price;
+                            let pricePerNight = searchResult.pricingQuote?.structuredStayDisplayPrice?.primaryLine?.price || searchResult.pricingQuote?.structuredStayDisplayPrice?.primaryLine?.discountedPrice;
+                            
+                            if (totalPrice === undefined) {
+                                totalPrice = searchResult.pricingQuote?.structuredStayDisplayPrice?.primaryLine?.price || searchResult.pricingQuote?.structuredStayDisplayPrice?.primaryLine?.discountedPrice;
+                                pricePerNight = undefined;
+                            }
+
+                            const parsedPlaceOfInterestAvailabilityDtos = new LocationDetailsDtos(
                                 searchResult.listing.id,
-                                searchResult.pricingQuote?.structuredStayDisplayPrice?.primaryLine?.price || searchResult.pricingQuote?.structuredStayDisplayPrice?.primaryLine?.discountedPrice,
-                                searchResult.pricingQuote?.structuredStayDisplayPrice?.secondaryLine?.price,
+                                pricePerNight,
+                                totalPrice,
                                 city,
                                 searchResult.listing.city,
                                 searchResult.listing.name
