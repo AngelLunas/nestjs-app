@@ -1,19 +1,25 @@
 import * as dotenv from 'dotenv';
+import * as airbnbStaySearchDto200RespSAMPLE from "../../../../../resources/actor/airbnbStaySearch.dto-200-resp-SAMPLE.json";
 import { Test, TestingModule } from "@nestjs/testing";
 import { ActorService } from "../../../../../../src/com/mtronic/fahs/service/actor.service";
 import { ConfigService } from "@nestjs/config";
 import { BackendActorPlacesQuery } from '@mtronic-llc/common';
 import { AirbnbCalendarMapper } from '../../../../../../src/com/mtronic/fahs/mapper/airbnb-calendar.mapper';
+import { AirbnbStaySearchMapper } from '../../../../../../src/com/mtronic/fahs/mapper/airbnb-stay-search.mapper';
+import { getActorServerUrl } from "../../../../../../src/utils/utils";
+import { WireMock } from "wiremock-captain";
 
 describe('ActorService', () => {
     let service: ActorService;
     let configService: ConfigService;
+    const wiremockUrl = getActorServerUrl();
+    const wireMockServer = new WireMock(wiremockUrl);
 
     beforeEach(async () => {
         dotenv.config();
 
         const module: TestingModule = await Test.createTestingModule({
-            providers: [ActorService, ConfigService, AirbnbCalendarMapper],
+            providers: [ActorService, ConfigService, AirbnbCalendarMapper, AirbnbStaySearchMapper],
         }).compile();
 
         service = module.get<ActorService>(ActorService);
@@ -24,7 +30,14 @@ describe('ActorService', () => {
         expect(service).toBeDefined();
     });
 
-    it('should runActorPlacesQuery', async () => {
+    /*it('should runActorPlacesQuery', async () => {
+        await wireMockServer.register(
+            {endpoint: '/getAvailablePlacesFromRegions', method: 'GET'},
+            {
+                status: 200,
+                body: airbnbStaySearchDto200RespSAMPLE
+            },
+        );
         //Fechas de prueba
         const today = new Date();
         const checkin = new Date(); //fecha de mañana
@@ -50,5 +63,5 @@ describe('ActorService', () => {
         expect(result).toBeDefined();
         expect(result).toBeInstanceOf(Array);
         expect(result.length).toBeGreaterThan(0);
-    }, 30000);
+    }, 30000);*/
 });

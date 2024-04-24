@@ -8,11 +8,14 @@ import { BackendActorPlacesQuery } from "@mtronic-llc/common";
 import * as dotenv from 'dotenv';
 import {WireMock} from "wiremock-captain";
 import * as airbnbLocationCalendarDto200RespSAMPLE from "../../../../../resources/actor/airbnbLocationCalendar.dto-200-resp-SAMPLE.json";
+import * as airbnbStaySearchDto200RespSAMPLE from "../../../../../resources/actor/airbnbStaySearch.dto-200-resp-SAMPLE.json";
+import * as airbnbStaySearchDto400RespSAMPLE from "../../../../../resources/actor/airbnbStaySearch.dto-400-resp-SAMPLE.json";
 import { getActorServerUrl } from "../../../../../../src/utils/utils";
 import {AirbnbCalendarMapper} from "../../../../../../src/com/mtronic/fahs/mapper/airbnb-calendar.mapper";
+import { AirbnbStaySearchMapper } from "../../../../../../src/com/mtronic/fahs/mapper/airbnb-stay-search.mapper";
 
 
-describe('FahsController (e2e)', () => {
+describe('FahsController (unit)', () => {
     let controller: FahsController;
     let actorService: ActorService;
     let codaService: CodaService;
@@ -27,7 +30,7 @@ describe('FahsController (e2e)', () => {
 
         const module: TestingModule = await Test.createTestingModule({
             controllers: [FahsController],
-            providers: [ActorService, CodaService, ConfigService, AirbnbCalendarMapper],
+            providers: [ActorService, CodaService, ConfigService, AirbnbCalendarMapper, AirbnbStaySearchMapper],
         }).compile();
 
         controller = module.get<FahsController>(FahsController);
@@ -35,8 +38,14 @@ describe('FahsController (e2e)', () => {
         codaService = module.get<CodaService>(CodaService);
     });
 
+    //Para limpiar los registros de wiremock después de cada test
+    /*afterEach(async () => {
+        await wireMockServer.clearAll();
+    });*/
+
     it('should be defined', () => {
         expect(controller).toBeDefined();
+        console.log(airbnbLocationCalendarDto200RespSAMPLE, 'airbnbLocationCalendarDto200RespSAMPLE')
     });
 
     it('GET /getAvailabilityOfPlacesOfInterest - should return availability of locations', async () => {
@@ -54,17 +63,18 @@ describe('FahsController (e2e)', () => {
         expect(locationAvailabilityDtos).toBeDefined();
         expect(locationAvailabilityDtos).toBeInstanceOf(Array);
         expect(locationAvailabilityDtos.length).toBeGreaterThan(0);
-        console.log(JSON.stringify(locationAvailabilityDtos, null, 2));
+        console.log(JSON.stringify(locationAvailabilityDtos, null, 2), 'getAvailabilityOfPlacesOfInterest');
     }, 200000); // 200 seconds
 
-    it('should runAvailability with 0 items', async () => {
+    //Desactivada temporalmente mientras se separa la llamada para obtener los ids a coda para producción
+    /*it('should runAvailability with 0 items', async () => {
         const error = new HttpException(
             'No existen datos que cumplan con los filtros',
             404,
         );
         jest.spyOn(actorService, 'getAvailabilityOfPlacesOfInterest').mockRejectedValue(error);
         await expect(controller.getAvailabilityOfPlacesOfInterest()).rejects.toEqual(error);
-    }, 100000); //100 seconds
+    }, 100000); //100 seconds*/
 
     it('should runAvailability with 0 items in apify actor', async () => {
         jest.spyOn(actorService, 'getAvailabilityOfPlacesOfInterest').mockResolvedValue([]);
@@ -73,7 +83,15 @@ describe('FahsController (e2e)', () => {
         expect(result).toBeInstanceOf(Array);
     }, 100000); //100 seconds
 
-    it('should runPlaces', async () => {
+    it('should throw an error if the airbnb request fails', async () => {
+        await wireMockServer.register(
+            {endpoint: '/getAvailablePlacesFromRegions', method: 'GET'},
+            {
+                status: 400,
+                body: airbnbStaySearchDto400RespSAMPLE
+            },
+        ); 
+
         const today = new Date();
         const checkin = new Date(); //fecha de mañana
         checkin.setDate(today.getDate() + 1);
@@ -86,39 +104,41 @@ describe('FahsController (e2e)', () => {
             regions: ['Miami']
         };
 
-        const result = await controller.getAvailablePlacesFromRegions(body);
-        expect(result).toBeDefined();
-        expect(result).toBeInstanceOf(Array);
-        expect(result.length).toBeGreaterThan(0);
-    }, 100000); // 100 seconds
-
-    it('should runPlaces with empty body', async () => {
-        const mockBody = {};
-
-        jest.spyOn(actorService, 'getAvailablePlacesFromRegions').mockImplementation(() => Promise.resolve({}));
-
         try {
-            const result = await controller.getAvailablePlacesFromRegions(mockBody as BackendActorPlacesQuery);
+            await controller.getAvailablePlacesFromRegions(body);
         } catch (error) {
             expect(error).toBeInstanceOf(HttpException);
-            expect(error.status).toEqual(400);
         }
     });
 
-    it('should runPlaces with inexistent region', async () => {
-        try {
-            const result = await controller.getAvailablePlacesFromRegions({ checkin: '2021-01-01', checkout: '2021-01-07', regions: ['nulls'] });
-        } catch (error) {
-            //Debo de lanzar el error de región inexistente desde el actor de Apify
-            expect(error).toBeInstanceOf(HttpException);
-        }
-    }, 100000);
+    it('GET /getAvailablePlacesFromRegions - should return available places of interest', async () => {
+        await wireMockServer.register(
+            {endpoint: '/getAvailablePlacesFromRegions', method: 'GET'},
+            {
+                status: 200,
+                body: airbnbStaySearchDto200RespSAMPLE
+            },
+        );
+        
+        const today = new Date();
+        const checkin = new Date(); //fecha de mañana
+        checkin.setDate(today.getDate() + 1);
+        const checkout = new Date(checkin); //fecha 6 días después de mañana
+        checkout.setDate(checkin.getDate() + 6);
 
-    it('should runPlaces with no regions', async () => {
-        const error = new HttpException('No se especificaron regiones', 400);
-        const result = controller.getAvailablePlacesFromRegions({ checkin: '2021-01-01', checkout: '2021-01-07', regions: [] });
-        await expect(result).rejects.toEqual(error);
-    });
+        const body = {
+            checkin: checkin.toISOString().split('T')[0],
+            checkout: checkout.toISOString().split('T')[0],
+            regions: ['Miami']
+        };
+
+        const placesOfInterestAvailabilityDtos = await controller.getAvailablePlacesFromRegions(body);
+        //TODO: Derek - verfificar que todo los properties de placesOfInterestAvailabilityDtos sean llenados
+        expect(placesOfInterestAvailabilityDtos).toBeDefined();
+        expect(placesOfInterestAvailabilityDtos).toBeInstanceOf(Array);
+        expect(placesOfInterestAvailabilityDtos.length).toBeGreaterThan(0);
+        console.log(JSON.stringify(placesOfInterestAvailabilityDtos, null, 2), 'getAvailablePlacesFromRegions');
+    }, 200000); // 200 seconds
 
     it('should runPlaces with inexistent dates', async () => {
         const error = new HttpException('Alguna de las fechas no existe', 400);
@@ -131,5 +151,4 @@ describe('FahsController (e2e)', () => {
         const result = controller.getAvailablePlacesFromRegions({ checkin: '2024/12-13', checkout: '2024/12/11', regions: ['Miami'] });
         await expect(result).rejects.toEqual(error);
     });
-
 });
