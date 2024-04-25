@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
-import {LocationsByRegion} from "@mtronic-llc/common-test";
+import {LocationsByRegion} from "@mtronic-llc/fahs-common-test";
 import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";

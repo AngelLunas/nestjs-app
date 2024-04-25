@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
 import {ActorService} from "../service/actor.service";
 import {CodaService} from "../../../../coda/coda.service";
-import {LocationsByRegion} from "@mtronic-llc/common-test";
+import {LocationsByRegion} from "@mtronic-llc/fahs-common-test";
 import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
 
 @Controller("fahs")
