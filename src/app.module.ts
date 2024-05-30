@@ -12,12 +12,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
-        MongooseModule.forRoot(process.env.MONGO_URI),
+        /*MongooseModule.forRoot(process.env.MONGO_URI),*/
         CodaModule,
         TrackingModule,
         FahsModule,
         ActorModule,
-        PlaceModule
+        /*PlaceModule*/
     ],
     controllers: [AppController],
     providers: [AppService],

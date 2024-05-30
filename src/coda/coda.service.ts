@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { viewsId } from '../utils/constants';
 import * as filters from './coda.filters.json';
 
 @Injectable()
@@ -75,6 +76,53 @@ export class CodaService {
 
         } else {
             throw new HttpException('Documento no encontrado', 404);
+        }
+    }
+
+    public async getIdsOfPlacesByPage(page: string): Promise<string[]> {
+        const codaDocID = this.configService.get<string>('CODA_DOC_ID');
+        const tableId: string = viewsId[page];
+        if (codaDocID && tableId) {
+            const codaApiKey = this.configService.get<string>('CODA_API_KEY');
+            const headers: Record<string, string> = {
+                Authorization: `Bearer ${codaApiKey}`,
+            };
+            let placesId: string[] = [];
+
+            try {
+                const response = await axios.get(
+                    `https://coda.io/apis/v1/docs/${codaDocID}/tables/${tableId}/rows`,
+                    {
+                        headers,
+                    },
+                );
+                placesId = response.data.items
+                    .map((item: any) => {
+                        let currentPlaceId = item.values['c-OCMBG1whUA'];
+                        if (!currentPlaceId.includes('datosDePrueba') && currentPlaceId !== '') {
+                            return currentPlaceId;
+                        }
+                        return null;
+                    })
+                    .filter((id: string) => id != null);
+            } catch (error) {
+                console.error(error);
+                throw new HttpException(
+                    'Error al obtener los ids de la página',
+                    500,
+                );
+            }
+
+            if (placesId.length > 0) {
+                return placesId;
+            } else {
+                throw new HttpException(
+                    'No existen datos que cumplan con los filtros',
+                    404,
+                );
+            }
+        } else {
+            throw new HttpException('Página no encontrada', 404);
         }
     }
 }

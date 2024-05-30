@@ -1,8 +1,9 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
-import {LocationsByRegion} from "@mtronic-llc/fahs-common-test";
-import {LocationAvailabilityDtos, BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/common';
+import { LocationsByRegion } from "@mtronic-llc/fahs-common-test";
+import { LocationAvailabilityDtos, LocationAvailabilityDtosResponse } from "@mtronic-llc/fahs-common-test";
+import { BackendActorAvailabilityQuery, BackendActorPlacesQuery } from "@mtronic-llc/fahs-common";
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
@@ -51,7 +52,7 @@ export class ActorService {
         }
     }
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
-    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtos[]> {
+    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponse[]> {
         const ENDPOINT = '/getAvailabilityOfPlacesOfInterest';
         const ENV =  process.env.NODE_ENV;
         let airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[];
@@ -76,7 +77,7 @@ export class ActorService {
                 const {items: apifyClientAirbnbCalendarResponseArry} = await apifyClient.dataset(runActor.defaultDatasetId).listItems();
                 airbnbLocationCalendarDtos = apifyClientAirbnbCalendarResponseArry as unknown as AirbnbLocationCalendarDto[];
             }
-            const calendarMonths = airbnbLocationCalendarDtos[0].data.data.merlin.pdpAvailabilityCalendar.calendarMonths;
+            //const calendarMonths = airbnbLocationCalendarDtos[0].data.data.merlin.pdpAvailabilityCalendar.calendarMonths;
 
             return this.airbnbCalendarMapper
                 .mapAirbnbLocationCalendarDtoToLocationAvailabilityDto(airbnbLocationCalendarDtos);
