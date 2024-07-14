@@ -1,0 +1,56 @@
+{
+    "items": [
+        {
+            "id": "i-QQEDPlzsRO",
+            "type": "row",
+            "href": "https://coda.io/apis/v1/docs/pOv7VpPKDY/tables/table-WtLQtJlwyt/rows/i-QQEDPlzsRO",
+            "name": "",
+            "index": 131,
+            "createdAt": "2023-08-23T23:27:06.773Z",
+            "updatedAt": "2024-07-09T21:19:20.078Z",
+            "browserLink": "https://coda.io/d/_dpOv7VpPKDY#_tutable-WtLQtJlwyt/_rui-QQEDPlzsRO",
+            "values": {
+                "c-GFsOPxd-Ut": "",
+                "c-cSihZHLDVO": "https://www.airbnb.com.co/rooms/49728242?adults=1&source_impression_id=p3_1692833092_MgC8lE0XEfX%2FQU4%2F&previous_page_section_name=1000&federated_search_id=76b40085-d943-4ccc-a728-d1e1b1c8ca45&saved_to_wishlist_id=1344423067&guests=1&check_in=2023-09-01&check_out=2023-09-02",
+                "c-eoVyQYeGTB": "Mariano & Alexis",
+                "c-P1PHzAXpXt": "$1,889",
+                "c-MfpOqd-pE0": 2,
+                "c-cvCkJXy-JT": "Pregunta la ultima vez que habia fumado antes de hacer reservacion",
+                "c-ovM9Wj8FUE": "Llenando Datos de Reserva",
+                "c-ugzcspAPSW": "Interes en Visitar",
+                "c-uDjmQjz2xl": "Mensajeando",
+                "c-R9pFSLfWC2": "Un Poco / Some",
+                "c-GOxEDmNGbZ": "Age of Floor(yrs): 0\nAllow Visit: N/A (Menos que 5 días mínimo) (Min stay: 2)",
+                "c-6ut0ZcidXG": 38,
+                "c-OCMBG1whUA": "49728242"
+            }
+        },
+        {
+            "id": "i-36t8StKitL",
+            "type": "row",
+            "href": "https://coda.io/apis/v1/docs/pOv7VpPKDY/tables/table-WtLQtJlwyt/rows/i-36t8StKitL",
+            "name": "",
+            "index": 9,
+            "createdAt": "2023-05-09T17:48:28.402Z",
+            "updatedAt": "2024-07-09T21:12:54.459Z",
+            "browserLink": "https://coda.io/d/_dpOv7VpPKDY#_tutable-WtLQtJlwyt/_rui-36t8StKitL",
+            "values": {
+                "c-GFsOPxd-Ut": "",
+                "c-cSihZHLDVO": "https://es.airbnb.com/rooms/53150347?source_impression_id=p3_1667509522_X7p7AfAiHCWq0ZZ8",
+                "c-eoVyQYeGTB": "Nicolas",
+                "c-P1PHzAXpXt": "$1,739",
+                "c-MfpOqd-pE0": 3,
+                "c-cvCkJXy-JT": "Preguntar si es posible visitar menos de 7 días. Mentí en el campo de si  permite visitar.  Tambien cual es el piso",
+                "c-ovM9Wj8FUE": "Llenando Datos de Reserva",
+                "c-ugzcspAPSW": "Interes en Visitar",
+                "c-uDjmQjz2xl": "Mensajeando",
+                "c-R9pFSLfWC2": "Mucho / Strong",
+                "c-GOxEDmNGbZ": "{NONE}",
+                "c-6ut0ZcidXG": 37,
+                "c-OCMBG1whUA": "53150347"
+            }
+        }
+    ],
+    "href": "https://coda.io/apis/v1/docs/pOv7VpPKDY/tables/table-WtLQtJlwyt/rows?pageToken=eyJsaW1pdCI6MjAwLCJvZmZzZXQiOjAsIm9wVmVyc2lvbiI6NjU3ODcsInNjaGVtYVZlcnNpb24iOjE3NCwic29ydEJ5IjoiY3JlYXRlZEF0In0",
+    "nextSyncToken": "eyJsaW1pdCI6MjAwLCJvZmZzZXQiOjAsInNvcnRCeSI6ImNyZWF0ZWRBdCIsInN0YXJ0QXQiOjE2OTI4MzMyMjYuNzczfQ"
+}

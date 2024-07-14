@@ -2,6 +2,7 @@ import axios from 'axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { viewsId } from '../utils/constants';
+import { CodaViewRowsResponseDto } from './dto/coda/codaViewRows.dto';
 import * as filters from './coda.filters.json';
 
 @Injectable()
@@ -156,7 +157,7 @@ export class CodaService {
         }
     }
     
-    public async getControlValueById(id: string): Promise<any> {
+    public async getControlValueById(id: string): Promise<CodaViewRowsResponseDto> {
         try {
             const codaDocID = this.configService.get<string>('CODA_DOC_ID');
             if (codaDocID) {
