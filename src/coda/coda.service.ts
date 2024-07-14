@@ -125,4 +125,51 @@ export class CodaService {
             throw new HttpException('Página no encontrada', 404);
         }
     }
+
+    public async getPlacesDataByView(view: string): Promise<any> {
+        try {
+            const codaDocID = this.configService.get<string>('CODA_DOC_ID');
+            const tableId: string = viewsId[view];
+            if (codaDocID && tableId) {
+                const response = await axios.get(
+                    `https://coda.io/apis/v1/docs/${codaDocID}/tables/${tableId}/rows`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.configService.get<string>(
+                                'CODA_API_KEY',
+                            )}`,
+                        },
+                    },
+                );
+
+                return response.data;
+            } else {
+                throw new HttpException('Página no encontrada', 404);
+            }
+        }
+        catch (error) {
+            console.error(error);
+            throw new HttpException(
+                'Error al obtener los datos de la página',
+                500,
+            );
+        }
+    }
+    
+    public async getControlValueById(id: string): Promise<any> {
+        try {
+            const codaDocID = this.configService.get<string>('CODA_DOC_ID');
+            if (codaDocID) {
+                const response = await axios.get(`https://coda.io/apis/v1/docs/${codaDocID}/controls/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.configService.get<string>('CODA_API_KEY')}`,
+                    },
+                });
+                return response.data.value;
+            }
+        } catch (error) {
+            console.error(error);
+            throw new HttpException('Error al obtener el control', 500);
+        }
+    }
 }
