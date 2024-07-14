@@ -127,7 +127,7 @@ export class CodaService {
         }
     }
 
-    public async getPlacesDataByView(view: string): Promise<any> {
+    public async getPlacesDataByView(view: string): Promise<CodaViewRowsResponseDto> {
         try {
             const codaDocID = this.configService.get<string>('CODA_DOC_ID');
             const tableId: string = viewsId[view];
@@ -157,7 +157,7 @@ export class CodaService {
         }
     }
     
-    public async getControlValueById(id: string): Promise<CodaViewRowsResponseDto> {
+    public async getControlValueById(id: string): Promise<any> {
         try {
             const codaDocID = this.configService.get<string>('CODA_DOC_ID');
             if (codaDocID) {
