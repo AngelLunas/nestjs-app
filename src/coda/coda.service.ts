@@ -142,7 +142,18 @@ export class CodaService {
                         },
                     },
                 );
-
+                return response.data;
+            } else if (codaDocID) {
+                const response = await axios.get(
+                    `https://coda.io/apis/v1/docs/${codaDocID}/tables/${view}/rows`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.configService.get<string>(
+                                'CODA_API_KEY',
+                            )}`,
+                        },
+                    },
+                );
                 return response.data;
             } else {
                 throw new HttpException('Página no encontrada', 404);
