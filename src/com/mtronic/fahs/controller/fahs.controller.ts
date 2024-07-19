@@ -85,10 +85,10 @@ export class FahsController {
         }
     }
 
-    @Get('getIdsOfPlacesByCodaPage/:page')
-    async getIdsOfPlacesByCodaPage(@Param('page') page: string): Promise<string[]> {
+    @Get('getPlacesDataByCodaPage/:page')
+    async getPlacesDataByCodaPage(@Param('page') page: string): Promise<{host: string, id: string}[]> {
         try {
-            return await this.codaService.getIdsOfPlacesByPage(page);
+            return await this.codaService.getPlacesDataByPage(page);
         } catch (error) {
             if (error instanceof HttpException) {
                 throw error;

@@ -80,7 +80,7 @@ export class CodaService {
         }
     }
 
-    public async getIdsOfPlacesByPage(page: string): Promise<string[]> {
+    public async getPlacesDataByPage(page: string): Promise<{host: string, id: string}[]> {
         const codaDocID = this.configService.get<string>('CODA_DOC_ID');
         const tableId: string = viewsId[page];
         if (codaDocID && tableId) {
@@ -88,7 +88,7 @@ export class CodaService {
             const headers: Record<string, string> = {
                 Authorization: `Bearer ${codaApiKey}`,
             };
-            let placesId: string[] = [];
+            let placesData: {host: string, id: string}[] = [];
 
             try {
                 const response = await axios.get(
@@ -97,11 +97,14 @@ export class CodaService {
                         headers,
                     },
                 );
-                placesId = response.data.items
+                placesData = response.data.items
                     .map((item: any) => {
                         let currentPlaceId = item.values['c-OCMBG1whUA'];
                         if (!currentPlaceId.includes('datosDePrueba') && currentPlaceId !== '') {
-                            return currentPlaceId;
+                            return {
+                                host: item.values['c-eoVyQYeGTB'],
+                                id: currentPlaceId,
+                            };
                         }
                         return null;
                     })
@@ -114,8 +117,8 @@ export class CodaService {
                 );
             }
 
-            if (placesId.length > 0) {
-                return placesId;
+            if (placesData.length > 0) {
+                return placesData;
             } else {
                 throw new HttpException(
                     'No existen datos que cumplan con los filtros',
@@ -149,7 +152,7 @@ export class CodaService {
                     {
                         headers: {
                             Authorization: `Bearer ${this.configService.get<string>(
-                                'CODA_API_KEY',
+                                'CODA_API_KEY'
                             )}`,
                         },
                     },
