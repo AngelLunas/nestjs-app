@@ -1,6 +1,6 @@
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
 import { Injectable } from "@nestjs/common";
-import {LocationAvailabilityDtos, MonthData, LocationAvailabilityDtosResponse, Error} from '@mtronic-llc/fahs-common-test';
+import {LocationAvailabilityDtos, MonthData, LocationAvailabilityDtosResponse, Error, Fecha} from '@mtronic-llc/fahs-common-test';
 
 @Injectable()
 export class AirbnbCalendarMapper {
@@ -8,17 +8,29 @@ export class AirbnbCalendarMapper {
         //TODO: Derek - cambiar nombre de AvailabilityData a LocationAvailabilityDto & MonthData a MonthDataDto
         airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[]): LocationAvailabilityDtosResponse[] {
         let locationAvailabilityDtos: LocationAvailabilityDtosResponse[] = [];
+        const days = ['L', 'M', 'm', 'J', 'V', 'S', 'D'];
+
         airbnbLocationCalendarDtos.map(airbnbLocationCalendarDto => {
             try {
                 const monthDataDtos: MonthData[] = airbnbLocationCalendarDto.data.data.merlin.pdpAvailabilityCalendar.calendarMonths.map(
                     calendarMonth => {
                         const numberOfDaysInMonth = calendarMonth.days.length;
-                        const availableDays = calendarMonth.days.filter(day => day.available).length;
+                        let availableDays = 0;
+                        const dates: Fecha[] = [];
+                        calendarMonth.days.map(day => {
+                            const date = new Date(day.calendarDate);  
+                            const weekDay = date.getDay() + 1;
+                            dates.push(new Fecha(day.calendarDate, day.available, weekDay.toString()));
+                            if (day.available) {
+                                availableDays++;
+                            }
+                        });
                         const percentAvailable = (availableDays / numberOfDaysInMonth) * 100;
                         const monthDataDto: MonthData =  {
                             año: calendarMonth.year,
                             mes: calendarMonth.month,
-                            porcentajeDisponibilidad: percentAvailable
+                            porcentajeDisponibilidad: percentAvailable,
+                            fechas: dates
                         };
                         return monthDataDto
                     });
@@ -34,12 +46,14 @@ export class AirbnbCalendarMapper {
                         kind: 'LocationAvailabilityDtos',
                         id: airbnbLocationCalendarDto.id,
                         proxSeisMeses: percentAvailForNext6Months,
+                        host: '',
                         meses: monthDataDtos
                     }
                 ));
             } catch (e) {
+                console.log(e);
                 locationAvailabilityDtos.push(new LocationAvailabilityDtosResponse(
-                    new Error('Es posible que este dato ya no exista', airbnbLocationCalendarDto.id)
+                    new Error('Es posible que este dato ya no exista', airbnbLocationCalendarDto.id, '')
                 ));
             }
         });

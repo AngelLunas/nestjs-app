@@ -10,12 +10,12 @@ import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.d
 import {AirbnbStaySearchDto} from "../dto/actor/airbnb-stay-search.dto";
 import {getActorServerUrl} from "../../../../utils/utils";
 import {AirbnbCalendarMapper} from "../mapper/airbnb-calendar.mapper";
-import {AirbnbStaySearchMapper} from "../mapper/airbnb-stay-search.mapper";
+//import {AirbnbStaySearchMapper} from "../mapper/airbnb-stay-search.mapper";
 
 @Injectable()
 export class ActorService {
-    constructor (private configService: ConfigService, private airbnbCalendarMapper: AirbnbCalendarMapper, private airbnbStaySearchMapper: AirbnbStaySearchMapper) {}
-    public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<LocationsByRegion[]> {
+    constructor (private configService: ConfigService, private airbnbCalendarMapper: AirbnbCalendarMapper, /*private airbnbStaySearchMapper: AirbnbStaySearchMapper*/) {}
+    /*public async getAvailablePlacesFromRegions (input: BackendActorPlacesQuery): Promise<LocationsByRegion[]> {
         let airbnbStaySearchDto: AirbnbStaySearchDto[];
         const ENDPOINT = '/getAvailablePlacesFromRegions';
         const ENV =  process.env.NODE_ENV;
@@ -50,7 +50,7 @@ export class ActorService {
                 throw new HttpException('Error al ejecutar el actor', 500);
             }
         }
-    }
+    }*/
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
     public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponse[]> {
         const ENDPOINT = '/getAvailabilityOfPlacesOfInterest';

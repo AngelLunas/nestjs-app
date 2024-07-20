@@ -33,7 +33,7 @@ export interface CalendarMonth {
 
 export interface Day {
     __typename:            string;
-    calendarDate?:         Date;
+    calendarDate?:         string;
     available?:            boolean;
     maxNights?:            number;
     minNights?:            number;

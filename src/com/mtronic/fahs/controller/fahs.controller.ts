@@ -28,7 +28,7 @@ export class FahsController {
         }
     }
 
-    @Post('getAvailablePlacesFromRegions')
+    /*@Post('getAvailablePlacesFromRegions')
     async getAvailablePlacesFromRegions(@Body() body: BackendActorPlacesQuery): Promise<LocationsByRegion[]> {
         try {
             const { checkin, checkout, regions } = body;
@@ -67,7 +67,7 @@ export class FahsController {
                 );
             }
         }
-    }
+    }*/
 
     @Post('getAvailabilityOfPlacesOfInterestWithIds')
     async getAvailabilityOfPlacesOfInterestWithIds(@Body() body: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponse[]> {

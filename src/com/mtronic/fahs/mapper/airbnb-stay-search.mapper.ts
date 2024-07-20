@@ -1,7 +1,7 @@
 import {AirbnbStaySearchDto} from "../dto/actor/airbnb-stay-search.dto";
 import { HttpException, Injectable } from "@nestjs/common";
 import { LocationsByRegion, LocationDetailsDtos } from "@mtronic-llc/fahs-common-test";
-@Injectable()
+/*@Injectable()
 export class AirbnbStaySearchMapper {
     mapAirbnbStaySearchDtoToPlaceOfInterestAvailabilityDto(
         airbnbStaySearchDtos: AirbnbStaySearchDto[]): LocationsByRegion[] {
@@ -45,4 +45,4 @@ export class AirbnbStaySearchMapper {
 
         return staysSearchAvailibilityByCityDtos;
     }
-}
+}*/
