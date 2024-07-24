@@ -95,6 +95,9 @@ export class CodaService {
                     `https://coda.io/apis/v1/docs/${codaDocID}/tables/${tableId}/rows`,
                     {
                         headers,
+                        params: {
+                            sortBy: 'natural',
+                        }
                     },
                 );
                 placesData = response.data.items
@@ -143,6 +146,9 @@ export class CodaService {
                                 'CODA_API_KEY',
                             )}`,
                         },
+                        params: {
+                            sortBy: 'natural',
+                        }
                     },
                 );
                 return response.data;
@@ -155,6 +161,9 @@ export class CodaService {
                                 'CODA_API_KEY'
                             )}`,
                         },
+                        params: {
+                            sortBy: 'natural',
+                        }
                     },
                 );
                 return response.data;
