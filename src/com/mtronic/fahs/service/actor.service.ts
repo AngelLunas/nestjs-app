@@ -1,9 +1,8 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {ApifyClient} from "apify-client";
-import { LocationsByRegion } from "@mtronic-llc/fahs-common-test";
-import { LocationAvailabilityDtos, LocationAvailabilityDtosResponse } from "@mtronic-llc/fahs-common-test";
-import { BackendActorAvailabilityQuery, BackendActorPlacesQuery } from "@mtronic-llc/fahs-common";
+import { LocationAvailabilityDtosResponseBackend } from "@mtronic-llc/fahs-common-test";
+import { BackendActorAvailabilityQuery } from "@mtronic-llc/fahs-common";
 import axios from "axios";
 import {AirbnbLocationCalendarErrorDto} from "../dto/actor/airbnb-location-calendar.dto-ERROR";
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
@@ -52,11 +51,11 @@ export class ActorService {
         }
     }*/
    //TODO: Derek - cambiar el retorno de este metodo de any a objecto de JSON que viene de Airbnb
-    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponse[]> {
+    public async getAvailabilityOfPlacesOfInterest (input: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponseBackend> {
         const ENDPOINT = '/getAvailabilityOfPlacesOfInterest';
         const ENV =  process.env.NODE_ENV;
         let airbnbLocationCalendarDtos: AirbnbLocationCalendarDto[];
-
+        const requestDate = new Date().toISOString();
         try {
             if (ENV === 'test') {
                 console.log('this is the ' + process.env.NODE_ENV + ' environment');
@@ -79,8 +78,9 @@ export class ActorService {
             }
             //const calendarMonths = airbnbLocationCalendarDtos[0].data.data.merlin.pdpAvailabilityCalendar.calendarMonths;
 
-            return this.airbnbCalendarMapper
+            const locationAvailabilityDtosResponse = this.airbnbCalendarMapper
                 .mapAirbnbLocationCalendarDtoToLocationAvailabilityDto(airbnbLocationCalendarDtos);
+            return new LocationAvailabilityDtosResponseBackend(locationAvailabilityDtosResponse, requestDate);
         } catch (error) {
             console.error(error);
             throw new HttpException('Error al ejecutar el actor', 500);

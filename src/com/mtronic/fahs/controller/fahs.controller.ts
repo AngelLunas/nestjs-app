@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpException, HttpStatus, Post, Param } from "@
 import {ActorService} from "../service/actor.service";
 import {CodaService} from "../../../../coda/coda.service";
 import { LocationsByRegion } from "@mtronic-llc/fahs-common-test";
-import { LocationAvailabilityDtos, LocationAvailabilityDtosResponse } from "@mtronic-llc/fahs-common-test";
+import { LocationAvailabilityDtos, LocationAvailabilityDtosResponse, LocationAvailabilityDtosResponseBackend } from "@mtronic-llc/fahs-common-test";
 import { BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/fahs-common-test';
 
 @Controller("fahs")
@@ -10,7 +10,7 @@ export class FahsController {
     constructor (private readonly actorService: ActorService, private readonly codaService: CodaService) {}
 
     @Get('getAvailabilityOfPlacesOfInterest')
-    async getAvailabilityOfPlacesOfInterest(): Promise<LocationAvailabilityDtosResponse[]> {
+    async getAvailabilityOfPlacesOfInterest(): Promise<LocationAvailabilityDtosResponseBackend> {
         try {
             //const ids: string[] = await this.codaService.getIdsOfPlacesWithLittleInterestOrMore(); //TODO: intercambiar por llamada a datos de prueba para desarrollo
             const ids: string[] = ['39925068', '38132540', /*'44521091', '35460354','51843505'*/]; //TODO: intercambiar por llamada a coda para produccion
@@ -70,7 +70,7 @@ export class FahsController {
     }*/
 
     @Post('getAvailabilityOfPlacesOfInterestWithIds')
-    async getAvailabilityOfPlacesOfInterestWithIds(@Body() body: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponse[]> {
+    async getAvailabilityOfPlacesOfInterestWithIds(@Body() body: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponseBackend> {
         try {           
             return await this.actorService.getAvailabilityOfPlacesOfInterest(body);
         } catch (error) {

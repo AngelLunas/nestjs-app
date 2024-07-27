@@ -1,5 +1,4 @@
 export const viewsId: { [key: string]: string } = {
-    backlog: 'table-VXYauclvVw',
     datosiniciales: 'table-rUQc0hjCXq',
     premensajeando: 'table-q88-bplMvz',
     descripcionyfotos: 'table-2PNjgCe5Hi',
