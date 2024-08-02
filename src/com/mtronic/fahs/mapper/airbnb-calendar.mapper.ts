@@ -20,8 +20,8 @@ export class AirbnbCalendarMapper {
                         calendarMonth.days.map(day => {
                             const date = new Date(day.calendarDate);  
                             const weekDay = date.getDay() + 1;
-                            dates.push(new Fecha(day.calendarDate, day.available, weekDay.toString()));
-                            if (day.available) {
+                            dates.push(new Fecha(day.calendarDate, day.available, weekDay.toString(), day.availableForCheckin));
+                            if (day.availableForCheckin) {
                                 availableDays++;
                             }
                         });
