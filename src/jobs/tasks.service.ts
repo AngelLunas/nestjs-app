@@ -23,7 +23,7 @@ export class TasksService {
         this.logger.debug(`Job scheduled with cron expression: ${cronExpression}`);
     }
 
-    @Cron('0 15 19 * * *', {
+    @Cron('0 20 19 * * *', {
        name: 'scheduleRandomJob' 
     })
     async handleCron() {
@@ -31,9 +31,9 @@ export class TasksService {
         const randomHour = Math.floor(Math.random() * 4) + 1; // Genera una hora aleatoria entre 1 y 4
         const randomMinute = Math.floor(Math.random() * 60); // Genera un minuto aleatorio entre 0 y 59
         const cronExpression = `0 ${randomMinute} ${randomHour + 1} * * *`; // Ajusta la hora aleatoria para que esté entre 1am y 5am
-        const randomDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 16);//new Date(now.getFullYear(), now.getMonth(), now.getDate(), randomHour + 1, randomMinute);
+        const randomDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 21)//new Date(now.getFullYear(), now.getMonth(), now.getDate(), randomHour + 1, randomMinute);
         //this.logger.debug(`Scheduling LocationAvailabilityDtos job at ${randomHour + 1}:${randomMinute}`);
 
-        this.scheduleGetAvailabilityOfPlacesJobRandom('0 16 19 * * *', randomDate);
+        this.scheduleGetAvailabilityOfPlacesJobRandom('0 21 19 * * *', randomDate);
     }   
 }
