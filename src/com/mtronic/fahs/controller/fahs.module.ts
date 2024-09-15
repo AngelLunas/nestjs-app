@@ -5,7 +5,7 @@ import { ActorModule } from "../service/actor.module";
 import { ActorService } from "../service/actor.service";
 import { CodaService } from "../../../../coda/coda.service";
 import {AirbnbCalendarMapper} from "../mapper/airbnb-calendar.mapper";
-import { MongoDatabaseModule } from "src/database/mongoDatabase.module";
+import { MongoDatabaseModule } from "../../../../database/MongoDatabase.module";
 import { FahsService } from "../service/fahs.service";
 //import {AirbnbStaySearchMapper} from "../mapper/airbnb-stay-search.mapper";
 
