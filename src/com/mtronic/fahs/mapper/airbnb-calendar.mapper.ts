@@ -1,6 +1,6 @@
 import {AirbnbLocationCalendarDto} from "../dto/actor/airbnb-location-calendar.dto";
 import { Injectable } from "@nestjs/common";
-import {LocationAvailabilityDtos, MonthData, LocationAvailabilityDtosResponse, Error, Fecha} from '@mtronic-llc/fahs-common-test';
+import {MonthData, LocationAvailabilityDtosResponse, LocationAvailabilityDtoErrorResponse, Fecha} from '@mtronic-llc/fahs-common-test';
 
 @Injectable()
 export class AirbnbCalendarMapper {
@@ -53,7 +53,7 @@ export class AirbnbCalendarMapper {
             } catch (e) {
                 console.log(e);
                 locationAvailabilityDtos.push(new LocationAvailabilityDtosResponse(
-                    new Error('Es posible que este dato ya no exista', airbnbLocationCalendarDto.id, '')
+                    new LocationAvailabilityDtoErrorResponse('Es posible que este dato ya no exista', airbnbLocationCalendarDto.id, '')
                 ));
             }
         });

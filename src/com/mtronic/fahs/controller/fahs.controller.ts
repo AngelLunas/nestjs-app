@@ -1,13 +1,16 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Param } from "@nestjs/common";
 import {ActorService} from "../service/actor.service";
 import {CodaService} from "../../../../coda/coda.service";
-import { LocationsByRegion } from "@mtronic-llc/fahs-common-test";
-import { LocationAvailabilityDtos, LocationAvailabilityDtosResponse, LocationAvailabilityDtosResponseBackend } from "@mtronic-llc/fahs-common-test";
-import { BackendActorAvailabilityQuery, BackendActorPlacesQuery} from '@mtronic-llc/fahs-common-test';
-
+import { LocationAvailabilityDtosRequest, LocationAvailabilityDtosResponseBackend, LocationAvailabilitySavedDtosResponseBackend } from "@mtronic-llc/fahs-common-test";
+import { BackendActorAvailabilityQuery } from '@mtronic-llc/fahs-common-test';
+import { FahsService } from "../service/fahs.service";
 @Controller("fahs")
 export class FahsController {
-    constructor (private readonly actorService: ActorService, private readonly codaService: CodaService) {}
+    constructor (
+        private readonly actorService: ActorService, 
+        private readonly codaService: CodaService,
+        private readonly fahsService: FahsService,
+    ) {}
 
     @Get('getAvailabilityOfPlacesOfInterest')
     async getAvailabilityOfPlacesOfInterest(): Promise<LocationAvailabilityDtosResponseBackend> {
@@ -83,6 +86,11 @@ export class FahsController {
                 );
             }
         }
+    }
+
+    @Post('getAvailabilityOfSavedPlacesOfInterestWithIds')
+    async getAvailabilityOfSavedPlacesOfInterestWithIds(@Body() body: LocationAvailabilityDtosRequest): Promise<LocationAvailabilitySavedDtosResponseBackend> {
+        return await this.fahsService.getAvailabilityOfSavedPlacesOfInterestWithIds(body);
     }
 
     @Get('getPlacesDataByCodaPage/:page')
