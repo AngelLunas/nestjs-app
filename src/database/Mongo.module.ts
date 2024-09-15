@@ -14,4 +14,4 @@ import { CodaViewUpdateDateService } from './availabilityOfPlaces/codaViewUpdate
     providers: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService],
     exports: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService]
 })
-export class MongoDatabaseModule {}
+export class MongoModule {}

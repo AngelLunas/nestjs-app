@@ -13,12 +13,12 @@ import { GetAvailabilityOfPlacesByViewService } from './jobs/getAvailabilityOfPl
 import { CodaService } from './coda/coda.service';
 import { ActorService } from './com/mtronic/fahs/service/actor.service';
 import { AirbnbCalendarMapper } from './com/mtronic/fahs/mapper/airbnb-calendar.mapper';
-import { MongoDatabaseModule } from './database/mongoDatabase.module';
+import { MongoModule } from './database/Mongo.module';
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         MongooseModule.forRoot(process.env.MONGO_URI),
-        MongoDatabaseModule,
+        MongoModule,
         CodaModule,
         TrackingModule,
         FahsModule,
