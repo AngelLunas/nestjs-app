@@ -29,7 +29,7 @@ export class TasksService {
         });
     }
 
-    @Cron('0 25 22 * * *')
+    @Cron('0 35 22 * * *')
     async handleInactivePlaces() {
         await this.jobService.getAvailabilityOfUnavailablePlaces();
     }

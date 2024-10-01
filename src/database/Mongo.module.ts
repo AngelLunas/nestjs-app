@@ -14,4 +14,4 @@ import { CodaService } from 'src/coda/coda.service';
     providers: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService, CodaService],
     exports: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService]
 })
-export class MongoDatabaseModule {}
+export class MongoModule {}
