@@ -24,7 +24,7 @@
   "dependencies": {
     "@mtronic-llc/common": "npm:@mtronic-llc/common@latest",
     "@mtronic-llc/fahs-common": "*",
-    "@mtronic-llc/fahs-common-test": "1.5.9",
+    "@mtronic-llc/fahs-common-test": "1.6.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",

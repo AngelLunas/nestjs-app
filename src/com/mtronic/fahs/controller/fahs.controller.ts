@@ -72,29 +72,13 @@ export class FahsController {
         }
     }*/
 
-    @Post('getAvailabilityOfPlacesOfInterestWithIds')
-    async getAvailabilityOfPlacesOfInterestWithIds(@Body() body: BackendActorAvailabilityQuery): Promise<LocationAvailabilityDtosResponseBackend> {
-        try {           
-            return await this.actorService.getAvailabilityOfPlacesOfInterest(body);
-        } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            } else {
-                throw new HttpException(
-                    'Error al obtener los datos del actor',
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                );
-            }
-        }
+    @Post('getPlacesAvailability')
+    async getAvailabilityOfSavedPlacesOfInterestWithIds(@Body() body: {codaView: string, refresh: boolean}): Promise<LocationAvailabilitySavedDtosResponseBackend> {
+        return await this.fahsService.getPlacesAvailabilityByCodaView(body);
     }
 
-    @Post('getAvailabilityOfSavedPlacesOfInterestWithIds')
-    async getAvailabilityOfSavedPlacesOfInterestWithIds(@Body() body: LocationAvailabilityDtosRequest): Promise<LocationAvailabilitySavedDtosResponseBackend> {
-        return await this.fahsService.getAvailabilityOfSavedPlacesOfInterestWithIds(body);
-    }
-
-    @Get('getPlacesDataByCodaPage/:page')
-    async getPlacesDataByCodaPage(@Param('page') page: string): Promise<{host: string, id: string}[]> {
+    /*@Get('getPlacesDataByCodaPage/:page')
+    async getPlacesDataByCodaPage(@Param('page') page: string): Promise<{host: string, id: string, rowID: number}[]> {
         try {
             return await this.codaService.getPlacesDataByPage(page);
         } catch (error) {
@@ -107,5 +91,5 @@ export class FahsController {
                 );
             }
         }
-    }
+    }*/
 }

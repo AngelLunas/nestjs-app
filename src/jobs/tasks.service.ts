@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, SchedulerRegistry } from '@nestjs/schedule';
-import { GetAvailabilityOfPlacesByViewService } from './getAvailabilityOfPlacesByView.service';
+import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { JobService } from './jobs.service';
 import { CronJob } from 'cron';
 
 @Injectable()
 export class TasksService {
     constructor(
-        private getAvailabilityOfPlacesByViewService: GetAvailabilityOfPlacesByViewService,
+        private jobService: JobService,
         private schedulerRegistry: SchedulerRegistry
     ) {}
     private readonly logger = new Logger(TasksService.name);
@@ -14,7 +14,7 @@ export class TasksService {
     scheduleGetAvailabilityOfPlacesJobRandom(cronExpression: string, date: Date) {
         const job = new CronJob(cronExpression, async () => {
             this.logger.debug(`Executing job at ${new Date().toISOString()}`);
-            await this.getAvailabilityOfPlacesByViewService.getAvailabilityOfPlacesByView(date);
+            await this.jobService.getAvailabilityOfPlacesByView(date);
         });
 
         this.schedulerRegistry.addCronJob('availabilityOfPlaces', job);
@@ -23,7 +23,18 @@ export class TasksService {
         this.logger.debug(`Job scheduled with cron expression: ${cronExpression}`);
     }
 
-    @Cron('0 20 19 * * *', {
+    scheduleCheckAvailabilityOfUnavailablePlaces(cronExpression: string, date: Date) {
+        const job = new CronJob(cronExpression, async () => {
+            this.logger.debug(`Executing job: (check availability of unavailable places) at ${new Date().toISOString()}`)
+        });
+    }
+
+    @Cron('0 25 22 * * *')
+    async handleInactivePlaces() {
+        await this.jobService.getAvailabilityOfUnavailablePlaces();
+    }
+
+    @Cron('0 22 22 * * *', {
        name: 'scheduleRandomJob' 
     })
     async handleCron() {
@@ -33,7 +44,6 @@ export class TasksService {
         const cronExpression = `0 ${randomMinute} ${randomHour + 1} * * *`; // Ajusta la hora aleatoria para que esté entre 1am y 5am
         const randomDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 19, 21)//new Date(now.getFullYear(), now.getMonth(), now.getDate(), randomHour + 1, randomMinute);
         //this.logger.debug(`Scheduling LocationAvailabilityDtos job at ${randomHour + 1}:${randomMinute}`);
-
-        this.scheduleGetAvailabilityOfPlacesJobRandom('0 21 19 * * *', randomDate);
-    }   
+        this.scheduleGetAvailabilityOfPlacesJobRandom(cronExpression, randomDate);
+    }
 }

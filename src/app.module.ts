@@ -9,11 +9,12 @@ import { FahsModule } from './com/mtronic/fahs/controller/fahs.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksService } from './jobs/tasks.service';
-import { GetAvailabilityOfPlacesByViewService } from './jobs/getAvailabilityOfPlacesByView.service';
+import { JobService } from './jobs/jobs.service';
 import { CodaService } from './coda/coda.service';
 import { ActorService } from './com/mtronic/fahs/service/actor.service';
 import { AirbnbCalendarMapper } from './com/mtronic/fahs/mapper/airbnb-calendar.mapper';
 import { MongoDatabaseModule } from './database/mongoDatabase.module';
+import { PlaceOfInterestAvailabilityController } from './database/availabilityOfPlaces/PlaceOfInterestAvailabilityModel.controller';
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
@@ -26,7 +27,7 @@ import { MongoDatabaseModule } from './database/mongoDatabase.module';
         ScheduleModule.forRoot(),
         /*PlaceModule*/
     ],
-    controllers: [AppController],
-    providers: [AppService, AirbnbCalendarMapper, CodaService, ActorService, GetAvailabilityOfPlacesByViewService, TasksService],
+    controllers: [AppController, PlaceOfInterestAvailabilityController],
+    providers: [AppService, AirbnbCalendarMapper, CodaService, ActorService, JobService, TasksService],
 })
 export class AppModule {}

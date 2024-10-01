@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { viewsId } from '../utils/constants';
 import { CodaViewRowsResponseDto } from './dto/coda/codaViewRows.dto';
 import * as filters from './coda.filters.json';
+import { CodaRow, MonthData } from '@mtronic-llc/fahs-common-test';
 
 @Injectable()
 export class CodaService {
@@ -80,7 +81,7 @@ export class CodaService {
         }
     }
 
-    public async getPlacesDataByPage(page: string): Promise<{host: string, id: string}[]> {
+    public async getPlacesDataByPage(page: string): Promise<CodaRow[]> {
         const codaDocID = this.configService.get<string>('CODA_DOC_ID');
         const tableId: string = viewsId[page];
         if (codaDocID && tableId) {
@@ -88,7 +89,7 @@ export class CodaService {
             const headers: Record<string, string> = {
                 Authorization: `Bearer ${codaApiKey}`,
             };
-            let placesData: {host: string, id: string}[] = [];
+            let placesData: CodaRow[] = [];
 
             try {
                 const response = await axios.get(
@@ -107,6 +108,7 @@ export class CodaService {
                             return {
                                 host: item.values['c-eoVyQYeGTB'],
                                 id: currentPlaceId,
+                                rowID: item.values['c-rGQPY4EYZV']
                             };
                         }
                         return null;
@@ -194,6 +196,38 @@ export class CodaService {
         } catch (error) {
             console.error(error);
             throw new HttpException('Error al obtener el control', 500);
+        }
+    }
+    
+    public async placeAvailabileAgainCodaWebHook(rowID: number, airId: string, host: string, availability: MonthData[]): Promise<any> {
+        try {
+            const codaDocID = this.configService.get<string>('CODA_DOC_ID');
+            if (codaDocID) {
+                const monthAbr = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
+                let availabilityString = "";
+                for (let i = 0; i < availability.length; i++) {
+                    const month = availability[i];
+                    availabilityString += `${monthAbr[month.mes - 1]}-${month.año.toString().slice(-2)}: ${Math.round(month.porcentajeDisponibilidad)}%`;
+                    if (i !== availability.length - 1) {
+                        availabilityString += ",\n"
+                    }
+                }
+                const response = await axios.post(`https://coda.io/apis/v1/docs/${codaDocID}/hooks/automation/grid-auto-Sj11iZpD8X`, {
+                    "rowID": rowID, 
+                    "id": airId,
+                    "host": host,
+                    "availabilty": availabilityString
+                }, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.configService.get<string>('CODA_API_KEY')}`,
+                    },
+                });
+                return response.data;
+            }
+        } catch (error) {
+            console.error("Error actualizando lugar en coda.", error);
+            throw error;
         }
     }
 }

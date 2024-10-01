@@ -1,5 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { PlaceOfInterestAvailabilityModelService } from "./PlaceOfInterestAvailabilityModel.service";
+import { JobService } from "src/jobs/jobs.service";
 import { AvailabilityOfPlaceOfInterestSchema } from "./PlaceOfInterestAvailability.schema";
 import { CodaViewUpdateDateService } from "./codaViewUpdateDate/CodaViewUpdateDate.service";
 
@@ -7,8 +8,13 @@ import { CodaViewUpdateDateService } from "./codaViewUpdateDate/CodaViewUpdateDa
 export class PlaceOfInterestAvailabilityController {
     constructor (
         private placeOfInterestAvailabilityModelService: PlaceOfInterestAvailabilityModelService,
-        private codaViewUpdateDateService: CodaViewUpdateDateService
+        private jobService: JobService
     ) {}
+
+    @Get('inactivePlaces')
+    async getAvailabilityOfInactivePlaces() {
+        return await this.jobService.getAvailabilityOfUnavailablePlaces();
+    }
 
     @Get('getAvailabilityOfPlaces')
     async getAvailabilityOfPlaces () {

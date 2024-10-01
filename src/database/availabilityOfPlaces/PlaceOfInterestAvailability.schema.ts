@@ -5,6 +5,7 @@ export const AvailabilityOfPlaceOfInterestSchema = new Schema({
     active: { type: Boolean, require: true },
     host: String,
     coda_view_id: String,
+    rowID: Number, 
     proxSeisMeses: Number,
     meses: [{
         año: Number,

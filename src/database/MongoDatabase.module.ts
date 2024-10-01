@@ -5,16 +5,14 @@ import { AvailabilityOfPlaceOfInterestSchema } from './availabilityOfPlaces/Plac
 import { PlaceOfInterestAvailabilityController } from './availabilityOfPlaces/PlaceOfInterestAvailabilityModel.controller';
 import { CodaViewUpdateDate } from './availabilityOfPlaces/codaViewUpdateDate/CodaViewUpdateDate.schema';
 import { CodaViewUpdateDateService } from './availabilityOfPlaces/codaViewUpdateDate/CodaViewUpdateDate.service';
-import { CodaViewUpdateDateController } from './availabilityOfPlaces/codaViewUpdateDate/CodaViewUpdateDate.controller';
-
+import { CodaService } from 'src/coda/coda.service';
 @Module({
     imports: [
         MongooseModule.forFeature([
             { name: 'PlaceOfInterestAvailability', schema: AvailabilityOfPlaceOfInterestSchema }, 
-            { name: 'CodaViewUpdateDate', schema: CodaViewUpdateDate }])
+            { name: 'CodaViewUpdateDate', schema: CodaViewUpdateDate }]),
     ],
-    /*controllers: [PlaceOfInterestAvailabilityController, CodaViewUpdateDateController],*/
-    providers: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService],
+    providers: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService, CodaService],
     exports: [PlaceOfInterestAvailabilityModelService, CodaViewUpdateDateService]
 })
 export class MongoDatabaseModule {}
